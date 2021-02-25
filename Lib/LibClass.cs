@@ -28,7 +28,7 @@ namespace LibNamespace
             public IntPtr ReturnMsg;
             public IntPtr Message;
             public int Number;
-            public string_t SetMsg;
+            //public string_t SetMsg;
         }
         [StructLayout(LayoutKind.Sequential)]
         public struct LibArgsHostHandle
@@ -38,21 +38,11 @@ namespace LibNamespace
 
         public static int  SetHostHandle(IntPtr arg, int argLength)
         {
-            AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
-            {
+            AppDomain.CurrentDomain.UnhandledException += (sender, args) => {
                 Console.WriteLine($"Unhandled Exception: " + args.ExceptionObject);
             };
 
-            if (argLength < System.Runtime.InteropServices.Marshal.SizeOf(typeof(LibArgsHostHandle))) {
-                Console.WriteLine("argLength < System.Runtime.InteropServices.Marshal.SizeOf(typeof(LibArgsHostHandle))");
-                return 1;
-            }
-
-            Console.WriteLine($"Marshal.SizeOf(LibArgs) = {Marshal.SizeOf(typeof(LibArgs))}");
-
-            var libArgs = Marshal.PtrToStructure<LibArgsHostHandle>(arg);
-
-            s_hostHandle = libArgs.HostHandle;
+            s_hostHandle = arg;
             Console.WriteLine("HostHandle: " + string.Format("{0:X8}", s_hostHandle));
 
             NativeLibrary.SetDllImportResolver(typeof(LibClass).Assembly, ImportResolver);
