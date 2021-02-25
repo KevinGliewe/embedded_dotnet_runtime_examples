@@ -6,11 +6,28 @@
 #include "dotnet_runtime.h"
 #include <fstream>
 
+struct lib_args
+{
+    char_t *returnMsg;
+    const char_t *message;
+    int number;
+    string_t setMsg;
+};
+
+
 extern "C"
 {
     void __declspec( dllexport ) ExeFn( const char_t* msg )
     {
         std::wcout << L"Hello from C++ " << msg << std::endl;
+    }
+}
+
+extern "C"
+{
+    void __declspec( dllexport ) SetArgsMsg(lib_args* args, const char_t* msg )
+    {
+        args->setMsg = string_t(msg);
     }
 }
 
@@ -27,7 +44,8 @@ int __cdecl wmain(int argc, wchar_t *argv[])
 int main(int argc, char *argv[])
 #endif
 {
-    ExeFn(L"C++");
+
+    std::cout << "sizeof(lib_args) = " << sizeof(lib_args) << std::endl;
 
     for(int i = 0; i < argc; i++)
         std::wcout << "argv[" << i << "] = " << argv[i] << std::endl;
@@ -134,21 +152,28 @@ int main(int argc, char *argv[])
 
     assert(rc == 0 && hello != nullptr && "Failure: load_assembly_and_get_function_pointer()");
     
-    struct lib_args
-    {
-        const char_t *message;
-        int number;
-    };
+
     for (int i = 0; i < 3; ++i)
     {
         // <SnippetCallManaged>
         lib_args args
         {
+            nullptr,
             DOTNET_RUNTIME_STR("from host!"),
             i
         };
 
         hello(&args, sizeof(args));
+
+        if(args.returnMsg)
+        {
+            std::wcout << args.returnMsg << std::endl;
+            //free(args.returnMsg);
+        }
+
+        std::wcout << args.setMsg << std::endl;
+
+        std::cout << "args.number = " << args.number << std::endl;
         // </SnippetCallManaged>
     }
 
@@ -165,10 +190,13 @@ int main(int argc, char *argv[])
 
     lib_args args
     {
+        nullptr,
         DOTNET_RUNTIME_STR("from host!"),
         -1
     };
     custom(args);
+
+    std::cout << "args.number = " << args.number << std::endl;
 
     return EXIT_SUCCESS;
 }
