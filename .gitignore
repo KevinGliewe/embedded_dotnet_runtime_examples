@@ -2,6 +2,10 @@
 bin
 Debug
 
+.idea
+
+cmake-build-*
+
 # Prerequisites
 *.d
 

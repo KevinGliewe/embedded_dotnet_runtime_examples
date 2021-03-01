@@ -1,0 +1,3 @@
+[submodule "dotnet_runtime"]
+	path = dotnet_runtime
+	url = git@github.com:KevinGliewe/dotnet_runtime.git

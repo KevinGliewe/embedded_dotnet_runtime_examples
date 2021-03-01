@@ -9,6 +9,12 @@
 #define STR DOTNET_RUNTIME_STR
 #define DIR_SEPARATOR DOTNET_RUNTIME_DIR_SEPARATOR
 
+#ifdef WIN32
+# define FEXPORT __declspec(dllexport)
+#else
+# define FEXPORT // empty
+#endif
+
 struct lib_args
 {
     char_t *returnMsg;
@@ -20,7 +26,7 @@ struct lib_args
 
 extern "C"
 {
-    void __declspec( dllexport ) ExeFn( const char_t* msg )
+    void FEXPORT ExeFn( const char_t* msg )
     {
         std::wcout << L"Hello from C++ " << msg << std::endl;
     }
@@ -28,7 +34,7 @@ extern "C"
 
 extern "C"
 {
-    void __declspec( dllexport ) SetArgsMsg(lib_args* args, const char_t* msg )
+    void FEXPORT SetArgsMsg(lib_args* args, const char_t* msg )
     {
         std::wcout << L"SetArgsMsg " << msg << std::endl;
         args->setMsg = string_t(msg);
@@ -54,14 +60,16 @@ int main(int argc, char *argv[])
     for(int i = 0; i < argc; i++)
         std::wcout << "argv[" << i << "] = " << argv[i] << std::endl;
 
-    if(argc < 2)
-        return 1;
+    string_t root_repo =
+            argc > 1 ?
+                argv[1] :
+                "/Users/kevingliewe/Documents/prog/dotnet/dotnet_runtime_test/";
 
-    string_t root_path = string_t(argv[1]) + STR("dotnet_runtime") DIR_SEPARATOR;
+    string_t root_path = root_repo + STR("dotnet_runtime") DIR_SEPARATOR;
     //string_t hostfxr_path = L"C:\\Program Files\\dotnet\\host\\fxr\\5.0.3\\hostfxr.dll";//root_path + DOTNET_RUNTIME_PATH_HOSTFXR;
     string_t hostfxr_path = root_path + DOTNET_RUNTIME_PATH_HOSTFXR;
 
-    string_t lib_path = string_t(argv[1]) +
+    string_t lib_path = root_repo +
         DIR_SEPARATOR
         STR("bin")
         DIR_SEPARATOR
@@ -74,11 +82,11 @@ int main(int argc, char *argv[])
     string_t libRuntimeconfig_path = lib_path + STR("Lib.runtimeconfig.json");
 
 
-    std::wcout << "root_path             = " << root_path << std::endl;
-    std::wcout << "hostfxr_path          = " << hostfxr_path << std::endl;
-    std::wcout << "lib_path              = " << lib_path << std::endl;
-    std::wcout << "libDll_path           = " << libDll_path << std::endl;
-    std::wcout << "libRuntimeconfig_path = " << libRuntimeconfig_path << std::endl;
+    std::wcout << "root_path             = " << root_path.c_str() << std::endl;
+    std::wcout << "hostfxr_path          = " << hostfxr_path.c_str() << std::endl;
+    std::wcout << "lib_path              = " << lib_path.c_str() << std::endl;
+    std::wcout << "libDll_path           = " << libDll_path.c_str() << std::endl;
+    std::wcout << "libRuntimeconfig_path = " << libRuntimeconfig_path.c_str() << std::endl;
 
     assert(exists(hostfxr_path));
     assert(exists(libDll_path));
@@ -128,7 +136,7 @@ int main(int argc, char *argv[])
             std::wcout << args.returnMsg << std::endl;
         }
 
-        std::wcout << args.setMsg << std::endl;
+        std::wcout << args.setMsg.c_str() << std::endl;
         std::cout << "args.number = " << args.number << std::endl;
     }
 
