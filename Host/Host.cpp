@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
     string_t root_repo =
             argc > 1 ?
                 argv[1] :
-                "/Users/kevingliewe/Documents/prog/dotnet/dotnet_runtime_test/";
+                STR("/Users/kevingliewe/Documents/prog/dotnet/dotnet_runtime_test/");
 
     string_t root_path = root_repo + STR("dotnet_runtime") DIR_SEPARATOR;
     //string_t hostfxr_path = L"C:\\Program Files\\dotnet\\host\\fxr\\5.0.3\\hostfxr.dll";//root_path + DOTNET_RUNTIME_PATH_HOSTFXR;
