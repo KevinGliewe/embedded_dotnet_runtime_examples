@@ -14,19 +14,19 @@
 #else
 # define FEXPORT // empty
 #endif
-
+using wstring_t = std::basic_string<wchar_t>;
 struct lib_args
 {
-    char_t *returnMsg;
     const char_t *message;
     int number;
-    string_t setMsg;
+    char returnMsg[512];
+    wstring_t setMsg;
 };
 
 
 extern "C"
 {
-    void FEXPORT ExeFn( const char_t* msg )
+    void FEXPORT ExeFn( const wchar_t* msg )
     {
         std::wcout << L"Hello from C++ " << msg << std::endl;
     }
@@ -34,10 +34,11 @@ extern "C"
 
 extern "C"
 {
-    void FEXPORT SetArgsMsg(lib_args* args, const char_t* msg )
+    void FEXPORT SetArgsMsg(lib_args* args, const wchar_t* msg )
     {
-        std::wcout << L"SetArgsMsg " << msg << std::endl;
-        args->setMsg = string_t(msg);
+        //std::wcout << L"SetArgsMsg \"" << msg << "\"" << std::endl;
+
+        args->setMsg = wstring_t(msg);
     }
 }
 
@@ -124,17 +125,13 @@ int main(int argc, char *argv[])
     {
         lib_args args
         {
-            nullptr,
             STR("from host!"),
             i
         };
 
         hello(&args, sizeof(args));
 
-        if(args.returnMsg)
-        {
-            std::wcout << args.returnMsg << std::endl;
-        }
+        std::wcout << (wchar_t*)&args.returnMsg << std::endl;
 
         std::wcout << args.setMsg.c_str() << std::endl;
         std::cout << "args.number = " << args.number << std::endl;
@@ -152,7 +149,6 @@ int main(int argc, char *argv[])
 
     lib_args args
     {
-        nullptr,
         STR("from host!"),
         -1
     };

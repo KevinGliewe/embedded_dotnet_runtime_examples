@@ -12,23 +12,12 @@ namespace LibNamespace
 
 
         [StructLayout(LayoutKind.Sequential)]
-        public struct string_t
+        public unsafe struct LibArgs
         {
-            public IntPtr i0;
-            public IntPtr i1;
-            public IntPtr i2;
-            public IntPtr i3;
-            public IntPtr i4;
-            public IntPtr i5;
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        public struct LibArgs
-        {
-            public IntPtr ReturnMsg;
             public IntPtr Message;
             public int Number;
-            //public string_t SetMsg;
+
+            public fixed byte ReturnMsg[512];
         }
         [StructLayout(LayoutKind.Sequential)]
         public struct LibArgsHostHandle
@@ -63,14 +52,19 @@ namespace LibNamespace
             {
                 var pArgs = (LibArgs*) arg;
                 pArgs->Number *= 2;
-                // Memory leak!?!
-                pArgs->ReturnMsg = Marshal.StringToBSTR($"Returned from C#");
+
+                var dest = IntPtr.Add( arg, (int)Marshal.OffsetOf(typeof(LibArgs), nameof(LibArgs.ReturnMsg)));
+
+                var bytes = StringToWCHAR_T("Returned from C#");
+                if(bytes.Length > 512)
+                    throw new Exception("String is bigger than 512 bytes!");
+                Marshal.Copy(bytes, 0, (IntPtr)dest, bytes.Length);
             }
 
             // Does not work!
             libArgs.Number += 10;
 
-            SetArgsMsg(arg, "SetArgsMsg() from C#");
+            SetArgsMsg(arg, StringToWCHAR_T("SetArgsMsg() from C#"));
 
             return 0;
         }
@@ -91,7 +85,7 @@ namespace LibNamespace
             CustomEntryPoint(libArgs);
             try
             {
-                ExeFn("C#");
+                ExeFn(StringToWCHAR_T("C#"));
             }
             catch (Exception ex)
             {
@@ -112,15 +106,11 @@ namespace LibNamespace
             Console.WriteLine($"-- number: {libArgs.Number}");
         }
 
-
-
-
+        [DllImport("*")]
+        public static extern void ExeFn(byte[] msg);
 
         [DllImport("*")]
-        public static extern void ExeFn([MarshalAs(UnmanagedType.BStr)] string msg);
-
-        [DllImport("*")]
-        public static extern void SetArgsMsg(IntPtr args, [MarshalAs(UnmanagedType.BStr)] string msg);
+        public static extern void SetArgsMsg(IntPtr args, byte[] msg);
 
         private static IntPtr ImportResolver(string libraryName, Assembly assembly, DllImportSearchPath? searchPath) {
             Console.WriteLine($"ImportResolver({libraryName})");
@@ -136,6 +126,15 @@ namespace LibNamespace
                 libHandle = NativeLibrary.Load(libraryName, assembly, searchPath);
             }
             return libHandle;
+        }
+
+        static byte[] StringToWCHAR_T(string s) {
+            var encoding =
+                Environment.OSVersion.Platform == PlatformID.Unix
+                ? System.Text.Encoding.UTF32
+                : System.Text.Encoding.Unicode; // UTF-16
+
+            return encoding.GetBytes(s + '\0');
         }
     }
 }
