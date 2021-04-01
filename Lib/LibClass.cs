@@ -69,6 +69,21 @@ namespace LibNamespace
             return 0;
         }
 
+        public static int FunctionPointerCallback(IntPtr arg, int argLength)
+        {
+            unsafe
+            {
+                unchecked
+                {
+                    var callbackFuncPtr = (delegate * unmanaged[Cdecl] < int, int >)arg;
+                    var ret = callbackFuncPtr(21);
+                    Console.WriteLine("Callback returned: " + ret);
+                }
+            }
+
+            return 0;
+        }
+
         public delegate void CustomEntryPointDelegate(LibArgs libArgs);
         public static void CustomEntryPoint(LibArgs libArgs) {
             Console.WriteLine($"Hello, world! from {nameof(CustomEntryPoint)} in {nameof(LibClass)}");

@@ -42,6 +42,12 @@ extern "C"
     }
 }
 
+int CallbackFunc(int i)
+{
+    std::cout << "Callback called with i=" << i << std::endl;
+    return i * 2;
+}
+
 inline bool exists (string_t name) {
     std::ifstream f(name.c_str());
     return f.good();
@@ -155,6 +161,13 @@ int main(int argc, char *argv[])
     custom(args);
 
     std::cout << "args.number = " << args.number << std::endl;
+
+    auto functionPointerCallback = lib.GetComponentEntrypoint(
+        STR("LibNamespace.LibClass"),
+        STR("FunctionPointerCallback")
+    );
+
+    functionPointerCallback((void*)&CallbackFunc, sizeof(int));
 
     return EXIT_SUCCESS;
 }
