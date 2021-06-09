@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using System.Reflection.Emit;
 using System.Runtime.InteropServices;
 
 namespace LibNamespace
@@ -16,6 +17,7 @@ namespace LibNamespace
         {
             public IntPtr Message;
             public int Number;
+            public IntPtr FpCallback;
 
             public fixed byte ReturnMsg[512];
         }
@@ -52,6 +54,7 @@ namespace LibNamespace
             {
                 var pArgs = (LibArgs*) arg;
                 pArgs->Number *= 2;
+                pArgs->FpCallback = Marshal.GetFunctionPointerForDelegate(new FunctionPinterCallbackXDelegate(FunctionPinterCallbackX));
 
                 var dest = IntPtr.Add( arg, (int)Marshal.OffsetOf(typeof(LibArgs), nameof(LibArgs.ReturnMsg)));
 
@@ -67,6 +70,13 @@ namespace LibNamespace
             SetArgsMsg(arg, StringToWCHAR_T("SetArgsMsg() from C#"));
 
             return 0;
+        }
+
+        public delegate int FunctionPinterCallbackXDelegate(int a);
+
+        public static int FunctionPinterCallbackX(int a) {
+            Console.WriteLine("FunctionPinterCallback");
+            return a + 1;
         }
 
         public static int FunctionPointerCallback(IntPtr arg, int argLength)
