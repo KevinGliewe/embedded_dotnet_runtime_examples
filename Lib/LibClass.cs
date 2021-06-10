@@ -87,8 +87,16 @@ namespace LibNamespace
                 {
                     var callbackFuncPtr = (delegate * unmanaged[Cdecl] < int, int >)arg;
                     var ret = callbackFuncPtr(21);
-                    Console.WriteLine("Callback returned: " + ret);
+                    Console.WriteLine("Pointer Callback returned: " + ret);
                 }
+            }
+
+            {
+                var callbackFuncDelegate =
+                    (FunctionPinterCallbackXDelegate) Marshal.GetDelegateForFunctionPointer(arg,
+                        typeof(FunctionPinterCallbackXDelegate));
+                var ret = callbackFuncDelegate(7);
+                Console.WriteLine("Delegate Callback returned: " + ret);
             }
 
             return 0;
