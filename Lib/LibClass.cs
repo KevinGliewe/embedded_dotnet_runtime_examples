@@ -11,6 +11,8 @@ namespace LibNamespace
 
         private static int s_CallCount = 1;
 
+        private static InstanceTest instanceTest = new InstanceTest();
+
 
         [StructLayout(LayoutKind.Sequential)]
         public unsafe struct LibArgs
@@ -54,7 +56,8 @@ namespace LibNamespace
             {
                 var pArgs = (LibArgs*) arg;
                 pArgs->Number *= 2;
-                pArgs->FpCallback = Marshal.GetFunctionPointerForDelegate(new FunctionPinterCallbackXDelegate(FunctionPinterCallbackX));
+                //pArgs->FpCallback = Marshal.GetFunctionPointerForDelegate(new FunctionPinterCallbackXDelegate(FunctionPinterCallbackX));
+                pArgs->FpCallback = Marshal.GetFunctionPointerForDelegate(new FunctionPinterCallbackXDelegate(instanceTest.FunctionPinterCallbackX));
 
                 var dest = IntPtr.Add( arg, (int)Marshal.OffsetOf(typeof(LibArgs), nameof(LibArgs.ReturnMsg)));
 
@@ -168,6 +171,16 @@ namespace LibNamespace
                 : System.Text.Encoding.Unicode; // UTF-16
 
             return encoding.GetBytes(s + '\0');
+        }
+
+        class InstanceTest
+        {
+            public int Val = 66;
+            public int FunctionPinterCallbackX(int a) {
+                Console.WriteLine("InstanceTest.FunctionPinterCallback");
+                return a + Val;
+            }
+
         }
     }
 }
