@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.InteropServices;
+using GCore.NativeInterop;
 
 namespace LibNamespace
 {
@@ -19,7 +21,8 @@ namespace LibNamespace
         {
             public IntPtr Message;
             public int Number;
-            public IntPtr FpCallback;
+            public IntPtr FpCallbackX;
+            public IntPtr FpCallbackY;
 
             public fixed byte ReturnMsg[512];
         }
@@ -57,8 +60,9 @@ namespace LibNamespace
                 var pArgs = (LibArgs*) arg;
                 pArgs->Number *= 2;
                 //pArgs->FpCallback = Marshal.GetFunctionPointerForDelegate(new FunctionPinterCallbackXDelegate(FunctionPinterCallbackX));
-                pArgs->FpCallback = Marshal.GetFunctionPointerForDelegate(new FunctionPinterCallbackXDelegate(instanceTest.FunctionPinterCallbackX));
-
+                pArgs->FpCallbackX = Marshal.GetFunctionPointerForDelegate(new FunctionPinterCallbackXDelegate(instanceTest.FunctionPinterCallbackX));
+                pArgs->FpCallbackY =
+                    Marshal.GetFunctionPointerForDelegate(new FunctionPinterCallbackYDelegate(FunctionPinterCallbackY));
                 var dest = IntPtr.Add( arg, (int)Marshal.OffsetOf(typeof(LibArgs), nameof(LibArgs.ReturnMsg)));
 
                 var bytes = StringToWCHAR_T("Returned from C#");
@@ -76,10 +80,28 @@ namespace LibNamespace
         }
 
         public delegate int FunctionPinterCallbackXDelegate(int a);
+        public delegate int FunctionPinterCallbackYDelegate(Pointer6<int> a, int size);
 
         public static int FunctionPinterCallbackX(int a) {
             Console.WriteLine("FunctionPinterCallback");
             return a + 1;
+        }
+
+        public static int FunctionPinterCallbackY(Pointer6<int> a, int size)
+        {
+            int sum = 0;
+
+            Console.WriteLine($"a.P = {a.Ptr}, a.IsValid = {a.IsValid}, size = {size}");
+            for (int i = 0; i < size; i++)
+            {
+                var a_ix = a.GetElement(i);
+                sum += a_ix;
+                Console.WriteLine($"a[{i}] = {a_ix}");
+            }
+
+            Console.WriteLine(string.Join(", ", a));
+
+            return sum;
         }
 
         public static int FunctionPointerCallback(IntPtr arg, int argLength)
