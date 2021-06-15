@@ -80,14 +80,14 @@ namespace LibNamespace
         }
 
         public delegate int FunctionPinterCallbackXDelegate(int a);
-        public delegate int FunctionPinterCallbackYDelegate(Pointer6<int> a, int size);
+        public delegate int FunctionPinterCallbackYDelegate(ArrPointer6<int> a, int size);
 
         public static int FunctionPinterCallbackX(int a) {
             Console.WriteLine("FunctionPinterCallback");
             return a + 1;
         }
 
-        public static int FunctionPinterCallbackY(Pointer6<int> a, int size)
+        public static int FunctionPinterCallbackY(ArrPointer6<int> a, int size)
         {
             int sum = 0;
 
