@@ -19,7 +19,8 @@ struct lib_args
 {
     const char_t *message;
     int number;
-    void* fpCallback;
+    void* fpCallbackX;
+    void* fpCallbackY;
     char returnMsg[512];
     wstring_t setMsg;
 };
@@ -140,10 +141,14 @@ int main(int argc, char *argv[])
 
         std::wcout << (wchar_t*)&args.returnMsg << std::endl;
 
+        int intArr[] = {1, 2, 3, 4, 5, i};
+
         std::wcout << args.setMsg.c_str() << std::endl;
         std::cout << "args.number = " << args.number << std::endl;
-        std::cout << "args.fpCallback = " << args.fpCallback << std::endl;
-        std::cout << "args.fpCallback(1) = " << ((int (*)(int ))args.fpCallback)(1) << std::endl;
+        std::cout << "args.fpCallbackX = " << args.fpCallbackX << std::endl;
+        std::cout << "args.fpCallbackX(1) = " << ((int (*)(int ))args.fpCallbackX)(1) << std::endl;
+        std::cout << "args.fpCallbackY = " << args.fpCallbackY << std::endl;
+        std::cout << "args.fpCallbackY(1) = " << ((int (*)(int[], int ))args.fpCallbackY)(intArr, 6) << std::endl;
     }
 
 
