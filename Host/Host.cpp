@@ -3,6 +3,8 @@
 
 #include <iostream>
 
+# define DOTNET_RUNTIME_VERSION "5.0.3"
+
 #include "dotnet_runtime.h"
 #include <fstream>
 
