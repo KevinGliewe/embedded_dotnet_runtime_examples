@@ -147,6 +147,17 @@
       <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</PreprocessToFile>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Common.h" />
+    <ClInclude Include="Test_DllImport.h" />
+    <ClInclude Include="Test_ManagedEntryPoint.h" />
+    <ClInclude Include="Test_ManagedFunctionPointer.h" />
+    <ClInclude Include="Test_ManagedString.h" />
+    <ClInclude Include="Test_ManagedUnsafe.h" />
+    <ClInclude Include="Test_NativeArray.h" />
+    <ClInclude Include="Test_NativeFunctionPointer.h" />
+    <ClInclude Include="Test_NativeString.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

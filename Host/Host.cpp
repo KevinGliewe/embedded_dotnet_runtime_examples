@@ -2,55 +2,30 @@
 //
 
 #include <iostream>
+#include <fstream>
 
 # define DOTNET_RUNTIME_VERSION "5.0.3"
 
-#include "dotnet_runtime.h"
-#include <fstream>
+#include "common.h"
 
-#define STR DOTNET_RUNTIME_STR
-#define DIR_SEPARATOR DOTNET_RUNTIME_DIR_SEPARATOR
-
-#ifdef WIN32
-# define FEXPORT __declspec(dllexport)
-#else
-# define FEXPORT // empty
-#endif
-using wstring_t = std::basic_string<wchar_t>;
-struct lib_args
-{
-    const char_t *message;
-    int number;
-    void* fpCallbackX;
-    void* fpCallbackY;
-    char returnMsg[512];
-    wstring_t setMsg;
-};
+#include "Test_ManagedEntryPoint.h"
+#include "Test_NativeFunctionPointer.h"
+#include "Test_ManagedFunctionPointer.h"
+#include "Test_DllImport.h"
+#include "Test_NativeArray.h"
+#include "Test_NativeString.h"
+#include "Test_ManagedString.h"
+#include "Test_ManagedUnsafe.h"
 
 
-extern "C"
-{
-    void FEXPORT ExeFn( const wchar_t* msg )
-    {
-        std::wcout << L"Hello from C++ " << msg << std::endl;
-    }
-}
+#define RUN_TEST(TESTNAME) \
+	try { \
+		bool result = TESTNAME::Run(lib); \
+		LogTest(result, #TESTNAME); \
+	} catch (const std::exception& e) { \
+		std::cout << "Exception during " << #TESTNAME << " '" << e.what() << "'\n"; \
+	}
 
-extern "C"
-{
-    void FEXPORT SetArgsMsg(lib_args* args, const wchar_t* msg )
-    {
-        //std::wcout << L"SetArgsMsg \"" << msg << "\"" << std::endl;
-
-        args->setMsg = wstring_t(msg);
-    }
-}
-
-int CallbackFunc(int i)
-{
-    std::cout << "Callback called with i=" << i << std::endl;
-    return i * 2;
-}
 
 inline bool exists (string_t name) {
     std::ifstream f(name.c_str());
@@ -65,8 +40,6 @@ int __cdecl wmain(int argc, wchar_t *argv[])
 int main(int argc, char *argv[])
 #endif
 {
-
-    std::cout << "sizeof(lib_args) = " << sizeof(lib_args) << std::endl;
 
     for(int i = 0; i < argc; i++)
         std::wcout << "argv[" << i << "] = " << argv[i] << std::endl;
@@ -114,70 +87,16 @@ int main(int argc, char *argv[])
 
     auto lib = dotnet_runtime::Library(&runtime, libDll_path, STR("Lib"));
 
+    // Running tests
+	
+    RUN_TEST(Test_ManagedEntryPoint);
+    RUN_TEST(Test_NativeFunctionPointer);
+    RUN_TEST(Test_ManagedFunctionPointer);
+    RUN_TEST(Test_DllImport);
+    RUN_TEST(Test_NativeArray);
+    RUN_TEST(Test_NativeString);
+    RUN_TEST(Test_ManagedString);
+    RUN_TEST(Test_ManagedUnsafe);
 
-    // Set host handle for callback
-
-    auto setHostHandle = lib.GetComponentEntrypoint(
-        STR("LibNamespace.LibClass"),
-        STR("SetHostHandle")
-    );
-    setHostHandle(host_handle, sizeof(host_handle));
-
-
-    // Component entry point
-
-    auto hello = lib.GetComponentEntrypoint(
-        STR("LibNamespace.LibClass"),
-        STR("Hello")
-    );
-
-    for (int i = 0; i < 3; ++i)
-    {
-        lib_args args
-        {
-            STR("from host!"),
-            i
-        };
-
-        hello(&args, sizeof(args));
-
-        std::wcout << (wchar_t*)&args.returnMsg << std::endl;
-
-        int intArr[] = {1, 2, 3, 4, 5, i};
-
-        std::wcout << args.setMsg.c_str() << std::endl;
-        std::cout << "args.number = " << args.number << std::endl;
-        std::cout << "args.fpCallbackX = " << args.fpCallbackX << std::endl;
-        std::cout << "args.fpCallbackX(1) = " << ((int (*)(int ))args.fpCallbackX)(1) << std::endl;
-        std::cout << "args.fpCallbackY = " << args.fpCallbackY << std::endl;
-        std::cout << "args.fpCallbackY(1) = " << ((int (*)(int[], int ))args.fpCallbackY)(intArr, 6) << std::endl;
-    }
-
-
-    // Custom entry point
-
-    typedef void (CORECLR_DELEGATE_CALLTYPE *custom_entry_point_fn)(lib_args args);
-
-    auto custom = (custom_entry_point_fn)lib.GetCustomEntrypoint(
-        STR("LibNamespace.LibClass"),
-        STR("CustomEntryPointUnmanaged")
-    );
-
-    lib_args args
-    {
-        STR("from host!"),
-        -1
-    };
-    custom(args);
-
-    std::cout << "args.number = " << args.number << std::endl;
-
-    auto functionPointerCallback = lib.GetComponentEntrypoint(
-        STR("LibNamespace.LibClass"),
-        STR("FunctionPointerCallback")
-    );
-
-    functionPointerCallback((void*)&CallbackFunc, sizeof(int));
-
-    return EXIT_SUCCESS;
+     return EXIT_SUCCESS;
 }
