@@ -19,8 +19,12 @@ jobs:
       - name: Setup MSBuild path
         uses: microsoft/setup-msbuild@v1
         id: setup_msbuild
+      
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '5.0.3'
         
       - name: Run build_run
         id: run_msbuild
-        working-directory: ${{ github.workspace }}
-        run: build_run.bat
+        shell: cmd
+        run: .\build_run.bat
