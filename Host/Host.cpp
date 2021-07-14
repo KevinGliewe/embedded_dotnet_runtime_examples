@@ -22,6 +22,7 @@
 	try { \
 		bool result = TESTNAME::Run(lib); \
 		LogTest(result, #TESTNAME); \
+        success &= result;\
 	} catch (const std::exception& e) { \
 		std::cout << "Exception during " << #TESTNAME << " '" << e.what() << "'\n"; \
 	}
@@ -88,6 +89,8 @@ int main(int argc, char *argv[])
     auto lib = dotnet_runtime::Library(&runtime, libDll_path, STR("Lib"));
 
     // Running tests
+
+    bool success = true;
 	
     RUN_TEST(Test_ManagedEntryPoint);
     RUN_TEST(Test_NativeFunctionPointer);
@@ -98,5 +101,5 @@ int main(int argc, char *argv[])
     RUN_TEST(Test_ManagedString);
     RUN_TEST(Test_ManagedUnsafe);
 
-     return EXIT_SUCCESS;
+    return success ? EXIT_SUCCESS : EXIT_FAILURE;
 }
