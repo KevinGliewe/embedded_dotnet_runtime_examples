@@ -89,3 +89,5 @@ jobs:
           git add -A
           git commit -m "Update README.md"
           git push
+
+          exit 0
