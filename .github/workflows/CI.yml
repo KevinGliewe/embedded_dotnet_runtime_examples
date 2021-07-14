@@ -79,6 +79,7 @@ jobs:
           dotnet-version: '5.0.x'
     
       - name: update file and push to remote
+        continue-on-error: true
         run: |
           dotnet tool restore
           dotnet mdsnippets ./ -e ./dotnet_runtime
@@ -89,5 +90,3 @@ jobs:
           git add -A
           git commit -m "Update README.md"
           git push
-
-          exit 0
