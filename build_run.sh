@@ -8,7 +8,7 @@ else
     cd ..
 fi
 
-dotnet build Lib/Lib.csproj
+dotnet build Host.sln
 
 mkdir build
 cd build
