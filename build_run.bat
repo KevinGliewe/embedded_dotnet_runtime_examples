@@ -8,6 +8,8 @@ if exist %~dp0\dotnet_runtime\bin\windows\x64\dotnet.exe (
     Powershell -executionpolicy remotesigned -File  %~dp0\dotnet_runtime\scripts\download-runtime.ps1
 )
 
+dotnet restore
+
 MSBuild %~dp0\Host.sln /p:Configuration=Release /p:Platform=x64
 
 %~dp0\x64\Release\Host.exe %~dp0
