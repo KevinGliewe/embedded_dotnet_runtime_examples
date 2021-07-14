@@ -82,12 +82,13 @@ int main(int argc, char *argv[])
 
     std::wcout << "host_handle           = " << host_handle << std::endl;
 
-
+    // begin-snippet: InitRuntimeAndLib
     // Init runtime and lib
 
     auto runtime = dotnet_runtime::Runtime(hostfxr_path, libRuntimeconfig_path);
 
     auto lib = dotnet_runtime::Library(&runtime, libDll_path, STR("Lib"));
+    // end-snippet
 
     // Running tests
 

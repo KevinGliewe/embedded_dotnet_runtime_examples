@@ -3,7 +3,15 @@
 
 name: Build and Test
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - 'README.md'
+  pull_request:
+    paths-ignore:
+      - 'README.md'
 
 jobs:
 
@@ -55,3 +63,29 @@ jobs:
       
       - name: Run build_run
         run: sh build_run.sh
+  
+  readme:
+    runs-on: ubuntu-latest
+    name: Generate README.md
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2.1.0
+        id: checkout_code
+
+      - name: Setup dotnet path
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '5.0.x'
+    
+      - name: update file and push to remote
+          run: |
+            dotnet tool restore
+            dotnet mdsnippets ./ -e ./dotnet_runtime
+
+            git config --global user.name "github-actions[bot]"
+            git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+            git add -A
+            git commit -m "Update README.md"
+            git push

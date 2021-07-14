@@ -4,11 +4,13 @@
 
 namespace Test_ManagedEntryPoint
 {
+	// begin-snippet: Test_ManagedEntryPoint_Args_CPP
 	struct args
 	{
 		int number1;
 		int number2;
 	};
+	// end-snippet
 	
 	bool Run(dotnet_runtime::Library& a_lib)
 	{
@@ -19,7 +21,8 @@ namespace Test_ManagedEntryPoint
 		args _args {1, 2};
 
 		{ // COMPONENT entry point
-			
+			// begin-snippet: Test_ManagedEntryPoint_ComponentEntryPoint_CPP
+
 			auto fpTest_ComponentEntryPoint = a_lib.GetComponentEntrypoint(
 				STR("LibNamespace.Test_ManagedEntryPoint"),
 				STR("Test_ComponentEntryPoint")
@@ -28,11 +31,13 @@ namespace Test_ManagedEntryPoint
 			bool success = fpTest_ComponentEntryPoint(&_args, sizeof(_args)) == 3;
 			LogTest(success, L"Test_ComponentEntryPoint");
 
+			// end-snippet
 			ret &= success;
 		}
 		
 
 		{ // CUSTOM entry point
+			// begin-snippet: Test_ManagedEntryPoint_CustomEntryPoint_CPP			
 
 			typedef int (CORECLR_DELEGATE_CALLTYPE* custom_entry_point_fn)(args);
 			
@@ -44,6 +49,7 @@ namespace Test_ManagedEntryPoint
 			bool success = fpTest_CustomEntryPoint(_args) == 3;
 			LogTest(success, L"Test_CustomEntryPoint");
 
+			// end-snippet
 			ret &= success;
 		}
 		
