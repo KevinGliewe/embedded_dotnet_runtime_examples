@@ -79,13 +79,13 @@ jobs:
           dotnet-version: '5.0.x'
     
       - name: update file and push to remote
-          run: |
-            dotnet tool restore
-            dotnet mdsnippets ./ -e ./dotnet_runtime
+        run: |
+          dotnet tool restore
+          dotnet mdsnippets ./ -e ./dotnet_runtime
 
-            git config --global user.name "github-actions[bot]"
-            git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-            git add -A
-            git commit -m "Update README.md"
-            git push
+          git add -A
+          git commit -m "Update README.md"
+          git push
