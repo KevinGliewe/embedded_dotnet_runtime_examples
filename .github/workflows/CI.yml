@@ -31,3 +31,22 @@ jobs:
         id: run_msbuild
         shell: cmd
         run: .\build_run.bat
+  
+  run-linux:
+    runs-on: ubuntu-latest
+    name: Run CMake and Test
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2.1.0
+        id: checkout_code
+        with:
+          submodules: recursive
+
+      - name: Setup cmake
+        uses: jwlawson/actions-setup-cmake@v1.9
+        with:
+          cmake-version: '3.16.x'
+      
+      - name: Run build_run
+        run: sh build_run.sh

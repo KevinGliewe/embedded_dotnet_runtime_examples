@@ -24,7 +24,7 @@ namespace Test_ManagedFunctionPointer
 			
 			bool success = managedCallback(6) == 8;
 			
-			LogTest(success, "Test_ManagedFunctionPointer_Instance");
+			LogTest(success, L"Test_ManagedFunctionPointer_Instance");
 
 			ret &= success;
 		}
@@ -42,7 +42,7 @@ namespace Test_ManagedFunctionPointer
 
 			bool success = managedCallback(5) == 8;
 
-			LogTest(success, "Test_ManagedFunctionPointer_Static");
+			LogTest(success, L"Test_ManagedFunctionPointer_Static");
 
 			ret &= success;
 		}

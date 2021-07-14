@@ -24,7 +24,7 @@ namespace Test_NativeString
 			);
 
 			bool success = fpTest_NativeString_Ansi((void*)"Hello Ansi");
-			LogTest(success, "Test_NativeString_Ansi");
+			LogTest(success, L"Test_NativeString_Ansi");
 
 			ret &= success;
 		}
@@ -37,7 +37,7 @@ namespace Test_NativeString
 			);
 
 			bool success = fpTest_NativeString_Wide((void*)L"Hello ❤");
-			LogTest(success, "Test_NativeString_Wide");
+			LogTest(success, L"Test_NativeString_Wide");
 
 			ret &= success;
 		}
@@ -55,14 +55,14 @@ namespace Test_NativeString
 
 			{ // Ansi
 				bool success = retArgs.CallbackAnsi("Hello Ansi");
-				LogTest(success, "Test_NativeString_FunctionPointer.CallbackAnsi");
+				LogTest(success, L"Test_NativeString_FunctionPointer.CallbackAnsi");
 
 				ret &= success;
 			}
 			
 			{ // Wide
 				bool success = retArgs.CallbackWide(L"Hello ❤");
-				LogTest(success, "Test_NativeString_FunctionPointer.CallbackWide");
+				LogTest(success, L"Test_NativeString_FunctionPointer.CallbackWide");
 
 				ret &= success;
 			}

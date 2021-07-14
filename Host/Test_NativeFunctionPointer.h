@@ -27,7 +27,7 @@ namespace Test_NativeFunctionPointer
 			);
 
 			bool success = fpTest_NativeFunctionPointer_Checked(fpNativeCallback, 4) == 8;
-			LogTest(success, "Test_NativeFunctionPointer_Checked");
+			LogTest(success, L"Test_NativeFunctionPointer_Checked");
 
 			ret &= success;
 		}
@@ -40,7 +40,7 @@ namespace Test_NativeFunctionPointer
 			);
 
 			bool success = fpTest_NativeFunctionPointer_Unchecked(fpNativeCallback, 4) == 8;
-			LogTest(success, "Test_NativeFunctionPointer_Unchecked");
+			LogTest(success, L"Test_NativeFunctionPointer_Unchecked");
 
 			ret &= success;
 		}

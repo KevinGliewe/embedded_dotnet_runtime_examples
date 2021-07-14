@@ -32,13 +32,13 @@ namespace Test_ManagedUnsafe
 
 		{ //sum
 			bool success = args.sum == 3;
-			LogTest(success, "Test_ManagedUnsafe_Struct.Sum");
+			LogTest(success, L"Test_ManagedUnsafe_Struct.Sum");
 			ret &= success;
 		}
 
 		{ // ReturnMsg
 			bool success = cmp(args.returnMsg, (char*)"Hello Ansi");
-			LogTest(success, "Test_ManagedUnsafe_Struct.ReturnMsg");
+			LogTest(success, L"Test_ManagedUnsafe_Struct.ReturnMsg");
 			ret &= success;
 		}
 

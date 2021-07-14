@@ -14,10 +14,10 @@
 
 using wstring_t = std::basic_string<wchar_t>;
 
-inline void LogTest(bool success, std::string name)
+inline void LogTest(bool success, std::wstring name)
 {
-	std::cout << (success ? "OK" : "ERR");
-	std::cout << "\t" << name << std::endl;
+	std::wcout << (success ? "OK" : "ERR");
+	std::wcout << L"\t" << name << std::endl;
 }
 
 template<typename T>

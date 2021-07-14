@@ -11,7 +11,9 @@ namespace LibNamespace
 
         private static IntPtr ImportResolver(string libraryName, Assembly assembly, DllImportSearchPath? searchPath)
         {
-            return libraryName == "Test_DllImport_LibName" ? s_moduleHandle : NativeLibrary.Load(libraryName, assembly, searchPath);
+            IntPtr ret = libraryName == "Test_DllImport_LibName" ? s_moduleHandle : NativeLibrary.Load(libraryName, assembly, searchPath);
+            //Console.WriteLine("ImportResolver " + ret);
+            return ret;
         }
 
         [DllImport("Test_DllImport_LibName")]

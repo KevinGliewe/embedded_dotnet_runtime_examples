@@ -29,7 +29,7 @@ namespace Test_NativeArray
 			);
 
 			bool success = fpTest_NativeArray_StructFixed(_args) == 72;
-			LogTest(success, "Test_NativeArray_StructFixed");
+			LogTest(success, L"Test_NativeArray_StructFixed");
 
 			ret &= success;
 		}
@@ -45,7 +45,7 @@ namespace Test_NativeArray
 			);
 
 			bool success = fpTest_NativeArray_ArgumentFixed(_args.Arr, _args.Multiplier) == 72;
-			LogTest(success, "Test_NativeArray_ArgumentFixed");
+			LogTest(success, L"Test_NativeArray_ArgumentFixed");
 
 			ret &= success;
 		}
@@ -63,7 +63,7 @@ namespace Test_NativeArray
 			managed_callback_fn callback = (managed_callback_fn)fpTest_NativeArray_ArgumentFixed_FunctionPointer();
 
 			bool success = callback(_args.Arr, _args.Multiplier) == 72;
-			LogTest(success, "Test_NativeArray_ArgumentFixed_FunctionPointer");
+			LogTest(success, L"Test_NativeArray_ArgumentFixed_FunctionPointer");
 
 			ret &= success;
 		}

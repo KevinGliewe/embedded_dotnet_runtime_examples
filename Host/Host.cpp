@@ -6,7 +6,7 @@
 
 # define DOTNET_RUNTIME_VERSION "5.0.3"
 
-#include "common.h"
+#include "Common.h"
 
 #include "Test_ManagedEntryPoint.h"
 #include "Test_NativeFunctionPointer.h"
@@ -21,10 +21,11 @@
 #define RUN_TEST(TESTNAME) \
 	try { \
 		bool result = TESTNAME::Run(lib); \
-		LogTest(result, #TESTNAME); \
+        std::wcout << (result ? "OK" : "ERR"); \
+	    std::wcout << L"\t" << #TESTNAME << std::endl; \
         success &= result;\
 	} catch (const std::exception& e) { \
-		std::cout << "Exception during " << #TESTNAME << " '" << e.what() << "'\n"; \
+		std::wcout << "Exception during " << #TESTNAME << " '" << e.what() << "'\n"; \
 	}
 
 
@@ -91,15 +92,20 @@ int main(int argc, char *argv[])
     // Running tests
 
     bool success = true;
-	
     RUN_TEST(Test_ManagedEntryPoint);
     RUN_TEST(Test_NativeFunctionPointer);
     RUN_TEST(Test_ManagedFunctionPointer);
-    RUN_TEST(Test_DllImport);
     RUN_TEST(Test_NativeArray);
     RUN_TEST(Test_NativeString);
     RUN_TEST(Test_ManagedString);
     RUN_TEST(Test_ManagedUnsafe);
+	
+#ifdef WIN32
+    RUN_TEST(Test_DllImport);
+#endif
+	
+
+    std::wcout << "Success: " << (success ? "true" : "false") << std::endl;
 
     return success ? EXIT_SUCCESS : EXIT_FAILURE;
 }

@@ -14,6 +14,8 @@ namespace Test_ManagedEntryPoint
 	{
 		bool ret = true;
 
+		std::wcout << "Test_ManagedEntryPoint: " << std::endl;
+
 		args _args {1, 2};
 
 		{ // COMPONENT entry point
@@ -24,7 +26,7 @@ namespace Test_ManagedEntryPoint
 			);
 
 			bool success = fpTest_ComponentEntryPoint(&_args, sizeof(_args)) == 3;
-			LogTest(success, "Test_ComponentEntryPoint");
+			LogTest(success, L"Test_ComponentEntryPoint");
 
 			ret &= success;
 		}
@@ -40,7 +42,7 @@ namespace Test_ManagedEntryPoint
 			);
 
 			bool success = fpTest_CustomEntryPoint(_args) == 3;
-			LogTest(success, "Test_CustomEntryPoint");
+			LogTest(success, L"Test_CustomEntryPoint");
 
 			ret &= success;
 		}

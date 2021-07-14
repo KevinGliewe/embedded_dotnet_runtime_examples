@@ -23,7 +23,7 @@ namespace Test_ManagedString
 			char* str = (char*)fpTest_ManagedString_Ansi();
 			bool success = cmp(str, (char*)"Hello Ansi");
 			
-			LogTest(success, "Test_ManagedString_Ansi");
+			LogTest(success, L"Test_ManagedString_Ansi");
 
 			ret &= success;
 		}
@@ -37,7 +37,7 @@ namespace Test_ManagedString
 
 			wchar_t* str = (wchar_t*)fpTest_ManagedString_Wide();
 			bool success = cmp(str, (wchar_t*)L"Hello ❤");
-			LogTest(success, "Test_ManagedString_Wide");
+			LogTest(success, L"Test_ManagedString_Wide");
 
 			ret &= success;
 		}
