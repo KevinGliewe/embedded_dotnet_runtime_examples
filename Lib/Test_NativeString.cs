@@ -26,7 +26,7 @@ namespace LibNamespace
         #endregion
 
         // ---------------------------------------------------------------------------------------------
-        #region Test_NativeString_FunctionPointer_CPP
+        #region Test_NativeString_FunctionPointer_CS
 
         public delegate bool FunctionPointerCallbackAnsiDelegate(NativeString nstr);
         public delegate bool FunctionPointerCallbackWideDelegate(NativeWString nstr);

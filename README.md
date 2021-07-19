@@ -109,6 +109,8 @@ auto lib = dotnet_runtime::Library(&runtime, libDll_path, STR("Lib"));
 
 ## Managed component-entrypoint
 
+> Entrypoints can only use [blittable types](https://en.wikipedia.org/wiki/Blittable_types)
+
 **Native**
 
 <!-- snippet: Test_ManagedEntryPoint_Args_CPP -->
@@ -176,6 +178,8 @@ public static int Test_ComponentEntryPoint(IntPtr arg, int argLength)
 
 ## Managed custom-entrypoint
 
+> Entrypoints can only use [blittable types](https://en.wikipedia.org/wiki/Blittable_types)
+
 **Native**
 
 <!-- snippet: Test_ManagedEntryPoint_Args_CPP -->
@@ -220,8 +224,6 @@ public unsafe struct Args
 ```
 <sup><a href='/Lib/Test_ManagedEntryPoint.cs#L9-L16' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_managedentrypoint_args_cs' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
-
-> Custom-entrypoints can only return [blittable types](https://en.wikipedia.org/wiki/Blittable_types)
 
 <!-- snippet: Test_ManagedEntryPoint_CustomEntryPoint_CS -->
 <a id='snippet-test_managedentrypoint_customentrypoint_cs'></a>
@@ -909,6 +911,18 @@ public static int Test_NativeString_Wide(IntPtr stringPtr)
 
 **Native**
 
+<!-- snippet: Test_NativeString_RetArgs_CPP -->
+<a id='snippet-test_nativestring_retargs_cpp'></a>
+```h
+struct RetArgs
+{
+	bool (*CallbackAnsi)(const char*);
+	bool (*CallbackWide)(const wchar_t*);
+};
+```
+<sup><a href='/Host/Test_NativeString.h#L7-L13' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativestring_retargs_cpp' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
+
 <!-- snippet: Test_NativeString_FunctionPointer_CPP -->
 <a id='snippet-test_nativestring_functionpointer_cpp'></a>
 ```h
@@ -937,74 +951,12 @@ fpTest_NativeString_FunctionPointer(&retArgs);
 }
 ```
 <sup><a href='/Host/Test_NativeString.h#L52-L78' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativestring_functionpointer_cpp' title='Start of snippet'>anchor</a></sup>
-<a id='snippet-test_nativestring_functionpointer_cpp-1'></a>
-```cs
-public delegate bool FunctionPointerCallbackAnsiDelegate(NativeString nstr);
-public delegate bool FunctionPointerCallbackWideDelegate(NativeWString nstr);
-
-public static FunctionPointerCallbackAnsiDelegate FunctionPointerCallbackAnsiDelegateInstance =
-    new FunctionPointerCallbackAnsiDelegate(CallbackAnsi);
-
-public static FunctionPointerCallbackWideDelegate FunctionPointerCallbackWideDelegateInstance =
-    new FunctionPointerCallbackWideDelegate(CallbackWide);
-
-public static bool CallbackAnsi(NativeString nstr) => nstr.ToString() == "Hello Ansi";
-public static bool CallbackWide(NativeWString nstr) => nstr.ToString() == "Hello ❤";
-
-[StructLayout(LayoutKind.Sequential)]
-public struct RetArgs
-{
-    public IntPtr CallbackAnsi;
-    public IntPtr CallbackWide;
-}
-
-[UnmanagedCallersOnly]
-public static void Test_NativeString_FunctionPointer(IntPtr retArgsPtr)
-{
-    unsafe
-    {
-        RetArgs* retArgs = (RetArgs*)retArgsPtr;
-        retArgs->CallbackAnsi =
-            Marshal.GetFunctionPointerForDelegate(FunctionPointerCallbackAnsiDelegateInstance);
-        retArgs->CallbackWide =
-            Marshal.GetFunctionPointerForDelegate(FunctionPointerCallbackWideDelegateInstance);
-    }
-}
-```
-<sup><a href='/Lib/Test_NativeString.cs#L29-L62' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativestring_functionpointer_cpp-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 **Managed**
 
-<!-- snippet: Test_NativeString_FunctionPointer_CPP -->
-<a id='snippet-test_nativestring_functionpointer_cpp'></a>
-```h
-typedef void (CORECLR_DELEGATE_CALLTYPE* custom_entry_point_fn2)(void*);
-
-auto fpTest_NativeString_FunctionPointer = (custom_entry_point_fn2)a_lib.GetCustomEntrypoint(
-	STR("LibNamespace.Test_NativeString"),
-	STR("Test_NativeString_FunctionPointer")
-);
-
-RetArgs retArgs;
-fpTest_NativeString_FunctionPointer(&retArgs);
-
-{ // Ansi
-	bool success = retArgs.CallbackAnsi("Hello Ansi");
-	LogTest(success, L"Test_NativeString_FunctionPointer.CallbackAnsi");
-
-	ret &= success;
-}
-
-{ // Wide
-	bool success = retArgs.CallbackWide(L"Hello ❤");
-	LogTest(success, L"Test_NativeString_FunctionPointer.CallbackWide");
-
-	ret &= success;
-}
-```
-<sup><a href='/Host/Test_NativeString.h#L52-L78' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativestring_functionpointer_cpp' title='Start of snippet'>anchor</a></sup>
-<a id='snippet-test_nativestring_functionpointer_cpp-1'></a>
+<!-- snippet: Test_NativeString_FunctionPointer_CS -->
+<a id='snippet-test_nativestring_functionpointer_cs'></a>
 ```cs
 public delegate bool FunctionPointerCallbackAnsiDelegate(NativeString nstr);
 public delegate bool FunctionPointerCallbackWideDelegate(NativeWString nstr);
@@ -1038,7 +990,7 @@ public static void Test_NativeString_FunctionPointer(IntPtr retArgsPtr)
     }
 }
 ```
-<sup><a href='/Lib/Test_NativeString.cs#L29-L62' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativestring_functionpointer_cpp-1' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/Lib/Test_NativeString.cs#L29-L62' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativestring_functionpointer_cs' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 # LICENSE

@@ -64,6 +64,8 @@ snippet: InitRuntimeAndLib
 
 ## Managed component-entrypoint
 
+> Entrypoints can only use [blittable types](https://en.wikipedia.org/wiki/Blittable_types)
+
 **Native**
 
 snippet: Test_ManagedEntryPoint_Args_CPP
@@ -82,6 +84,8 @@ snippet: Test_ManagedEntryPoint_ComponentEntryPoint_CS
 
 ## Managed custom-entrypoint
 
+> Entrypoints can only use [blittable types](https://en.wikipedia.org/wiki/Blittable_types)
+
 **Native**
 
 snippet: Test_ManagedEntryPoint_Args_CPP
@@ -91,8 +95,6 @@ snippet: Test_ManagedEntryPoint_CustomEntryPoint_CPP
 **Managed**
 
 snippet: Test_ManagedEntryPoint_Args_CS
-
-> Custom-entrypoints can only return [blittable types](https://en.wikipedia.org/wiki/Blittable_types)
 
 snippet: Test_ManagedEntryPoint_CustomEntryPoint_CS
 
@@ -281,11 +283,13 @@ snippet: Test_NativeString_Wide_CS
 
 **Native**
 
+snippet: Test_NativeString_RetArgs_CPP
+
 snippet: Test_NativeString_FunctionPointer_CPP
 
 **Managed**
 
-snippet: Test_NativeString_FunctionPointer_CPP
+snippet: Test_NativeString_FunctionPointer_CS
 
 # LICENSE
 
