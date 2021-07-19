@@ -9,19 +9,24 @@ namespace LibNamespace
     public static class Test_NativeString
     {
 
+        #region Test_NativeString_Ansi_CS
         [UnmanagedCallersOnly]
         public static int Test_NativeString_Ansi(IntPtr stringPtr)
         {
             return CEncoding.Ascii.GetString(stringPtr) == "Hello Ansi" ? 1 : 0;
         }
+        #endregion
 
+        #region Test_NativeString_Wide_CS
         [UnmanagedCallersOnly]
         public static int Test_NativeString_Wide(IntPtr stringPtr)
         {
             return CEncoding.Wide.GetString(stringPtr) == "Hello ❤" ? 1 : 0;
         }
+        #endregion
 
         // ---------------------------------------------------------------------------------------------
+        #region Test_NativeString_FunctionPointer_CPP
 
         public delegate bool FunctionPointerCallbackAnsiDelegate(NativeString nstr);
         public delegate bool FunctionPointerCallbackWideDelegate(NativeWString nstr);
@@ -54,5 +59,6 @@ namespace LibNamespace
                     Marshal.GetFunctionPointerForDelegate(FunctionPointerCallbackWideDelegateInstance);
             }
         }
+        #endregion
     }
 }

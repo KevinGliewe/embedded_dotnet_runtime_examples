@@ -77,13 +77,21 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '5.0.x'
-    
-      - name: update file and push to remote
-        continue-on-error: true
+
+      - name: update snippets
         run: |
           dotnet tool restore
           dotnet mdsnippets ./ -e ./dotnet_runtime
 
+      - name: update toc
+        run: |
+          curl https://raw.githubusercontent.com/ekalinin/github-markdown-toc/master/gh-md-toc -o gh-md-toc
+          chmod a+x gh-md-toc
+          ./gh-md-toc --insert --no-backup README.md
+
+      - name: push to remote
+        continue-on-error: true
+        run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 

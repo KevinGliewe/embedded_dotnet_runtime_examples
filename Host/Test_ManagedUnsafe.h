@@ -4,6 +4,7 @@
 
 namespace Test_ManagedUnsafe
 {
+	// begin-snippet: Test_ManagedUnsafe_CPP
 	struct Args
 	{
 		int number1;
@@ -41,9 +42,7 @@ namespace Test_ManagedUnsafe
 			LogTest(success, L"Test_ManagedUnsafe_Struct.ReturnMsg");
 			ret &= success;
 		}
-
-		
-
 		return ret;
 	}
+	// end-snippet
 }

@@ -18,7 +18,7 @@ namespace LibNamespace
         // begin-snippet: Test_ManagedEntryPoint_ComponentEntryPoint_CS
         public static int Test_ComponentEntryPoint(IntPtr arg, int argLength)
         {
-            if (argLength < System.Runtime.InteropServices.Marshal.SizeOf(typeof(Args)))
+            if (argLength < Marshal.SizeOf(typeof(Args)))
             {
                 return 1;
             }

@@ -5,11 +5,13 @@ namespace LibNamespace
 {
     public static class Test_ManagedFunctionPointer
     {
+        // begin-snippet: Test_ManagedFunctionPointer_FunctionPointerCallbackDelegate_CS
         public delegate int FunctionPointerCallbackDelegate(int a);
+        // end-snippet
 
 
-        #region Instance // -----------------------------------------------------------------------------------
-
+        #region Test_ManagedFunctionPointer_Instance_CS
+        
         public class CallableObject
         {
             public FunctionPointerCallbackDelegate CallbackDelegate;
@@ -30,6 +32,7 @@ namespace LibNamespace
 
         public static CallableObject CallableObjectInstance;
 
+        // Enty point for unmanaged code
         [UnmanagedCallersOnly]
         public static IntPtr Test_ManagedFunctionPointer_Instance(int member)
         {
@@ -38,14 +41,15 @@ namespace LibNamespace
         }
 
 
-        #endregion // --------------------------------------------------------------------------------------------
+        #endregion // Test_ManagedFunctionPointer_Instance_CS ----------------------------------------------------------
 
-        #region Static // ------------------------------------------------------------------------------------------
+        #region Test_ManagedFunctionPointer_Static_CS
 
         public static FunctionPointerCallbackDelegate FunctionPointerCallbackDelegateStatic = new FunctionPointerCallbackDelegate(Callback);
 
         public static int Callback(int i) => i + 3;
 
+        // Enty point for unmanaged code
         [UnmanagedCallersOnly]
         public static IntPtr Test_ManagedFunctionPointer_Static()
         {
@@ -53,7 +57,7 @@ namespace LibNamespace
         }
 
 
-        #endregion // -------------------------------------------------------------------------------------------------
+        #endregion // Test_ManagedFunctionPointer_Static_CS -------------------------------------------------------------
 
     }
 }

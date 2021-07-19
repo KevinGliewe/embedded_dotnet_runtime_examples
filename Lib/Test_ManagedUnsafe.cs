@@ -6,6 +6,7 @@ namespace LibNamespace
 {
     public static class Test_ManagedUnsafe
     {
+        // begin-snippet: Test_ManagedUnsafe_CS
         [StructLayout(LayoutKind.Sequential)]
         public unsafe struct Args
         {
@@ -24,11 +25,15 @@ namespace LibNamespace
 
                 args->Sum = args->Number1 + args->number2;
 
+                // Get the memory offset of Args.ReturnMsg
                 var destReturnMsg = IntPtr.Add(ptr, (int)Marshal.OffsetOf(typeof(Args), nameof(Args.ReturnMsg)));
+
                 var data = CEncoding.Ascii.GetBytes("Hello Ansi");
+
+                // Copy the data to the unmanaged memory
                 Marshal.Copy(data, 0, (IntPtr)destReturnMsg, data.Length);
             }
         }
-        
+        // end-snippet
     }
 }

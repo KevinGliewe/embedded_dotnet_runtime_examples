@@ -7,13 +7,14 @@ namespace LibNamespace
 {
     public static class Test_NativeArray
     {
+        #region Test_NativeArray_StructFixed_CS
         [StructLayout(LayoutKind.Sequential)]
         public unsafe struct Args
         {
             public fixed int Arr[8];
             public int Multiplier;
         }
-
+        
         [UnmanagedCallersOnly]
         public static unsafe int Test_NativeArray_StructFixed(Args args)
         {
@@ -27,8 +28,9 @@ namespace LibNamespace
             return ret;
         }
 
-        // ----------------------------------------------------------------------------------------------------
+        #endregion // ----------------------------------------------------------------------------------------------------
 
+        #region Test_NativeArray_ArgumentFixed_CS
         [UnmanagedCallersOnly]
         public static int Test_NativeArray_ArgumentFixed(IntPtr arrPtr, int multiplier)
         {
@@ -39,9 +41,9 @@ namespace LibNamespace
             return arr.Sum(el => el * multiplier); ;
         }
 
-        // ----------------------------------------------------------------------------------------------------
+        #endregion // ----------------------------------------------------------------------------------------------------
 
-
+        #region Test_NativeArray_ArgumentFixed_FunctionPointer_CS
         public delegate int FunctionPointerCallbackDelegate(ArrPointer8<int> arr, int multiplier);
 
         public static FunctionPointerCallbackDelegate FunctionPointerCallbackDelegateInstance =
@@ -54,5 +56,6 @@ namespace LibNamespace
         {
             return Marshal.GetFunctionPointerForDelegate(FunctionPointerCallbackDelegateInstance);
         }
+        #endregion
     }
 }

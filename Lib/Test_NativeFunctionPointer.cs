@@ -5,7 +5,7 @@ namespace LibNamespace
 {
     public static class Test_NativeFunctionPointer
     {
-
+        #region Test_NativeFunctionPointer_Checked_CS
         public delegate int FunctionPointerCallbackDelegate(int a);
 
         [UnmanagedCallersOnly]
@@ -16,7 +16,9 @@ namespace LibNamespace
                     typeof(FunctionPointerCallbackDelegate));
             return callbackFuncDelegate(number);
         }
+        #endregion
 
+        #region Test_NativeFunctionPointer_Unchecked_CS
         [UnmanagedCallersOnly]
         public static int Test_NativeFunctionPointer_Unchecked(IntPtr nativeFunctionPtr, int number)
         {
@@ -29,5 +31,6 @@ namespace LibNamespace
                 }
             }
         }
+        #endregion
     }
 }
