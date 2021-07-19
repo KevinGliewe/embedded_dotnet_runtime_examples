@@ -72,9 +72,6 @@ This repo contains a project with examples for using a embedded .NET runtime in 
       * [Native](#native-14)
       * [Managed](#managed-14)
 * [LICENSE](#license)
-
-<!-- Added by: runner, at: Mon Jul 19 14:05:16 UTC 2021 -->
-
 <!--te-->
 
 # Build and Run
