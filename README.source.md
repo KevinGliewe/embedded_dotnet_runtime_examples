@@ -64,13 +64,13 @@ snippet: InitRuntimeAndLib
 
 ## Managed component-entrypoint
 
-### Native
+**Native**
 
 snippet: Test_ManagedEntryPoint_Args_CPP
 
 snippet: Test_ManagedEntryPoint_ComponentEntryPoint_CPP
 
-### Managed
+**Managed**
 
 snippet: Test_ManagedEntryPoint_Args_CS
 
@@ -82,13 +82,13 @@ snippet: Test_ManagedEntryPoint_ComponentEntryPoint_CS
 
 ## Managed custom-entrypoint
 
-### Native
+**Native**
 
 snippet: Test_ManagedEntryPoint_Args_CPP
 
 snippet: Test_ManagedEntryPoint_CustomEntryPoint_CPP
 
-### Managed
+**Managed**
 
 snippet: Test_ManagedEntryPoint_Args_CS
 
@@ -100,13 +100,13 @@ snippet: Test_ManagedEntryPoint_CustomEntryPoint_CS
 
 ## Managed function-pointer to instance method
 
-### Native
+**Native**
 
 snippet: Test_ManagedFunctionPointer_Typedef_managed_callback_fn_CPP
 
 snippet: Test_ManagedFunctionPointer_Instance_CPP
 
-### Managed
+**Managed**
 
 snippet: Test_ManagedFunctionPointer_FunctionPointerCallbackDelegate_CS
 
@@ -116,13 +116,13 @@ snippet: Test_ManagedFunctionPointer_Instance_CS
 
 ## Managed function-pointer to static function
 
-### Native
+**Native**
 
 snippet: Test_ManagedFunctionPointer_Typedef_managed_callback_fn_CPP
 
 snippet: Test_ManagedFunctionPointer_Static_CPP
 
-### Managed
+**Managed**
 
 snippet: Test_ManagedFunctionPointer_FunctionPointerCallbackDelegate_CS
 
@@ -132,11 +132,11 @@ snippet: Test_ManagedFunctionPointer_Static_CS
 
 ## Return managed ASCII string
 
-### Native
+**Native**
 
 snippet: Test_ManagedString_Ansi_CPP
 
-### Managed
+**Managed**
 
 snippet: Test_ManagedString_Ansi_CS
 
@@ -152,11 +152,11 @@ What does CString do?
 
 > The encoding depends on the platform. For windows systems it is UTF16 and for posix systems it is UTF32.
 
-### Native
+**Native**
 
 snippet: Test_ManagedString_Wide_CPP
 
-### Managed
+**Managed**
 
 What does CString do?
  1. Determins the correct encoding for the current platform. (UTF16 or UTF32)
@@ -171,11 +171,11 @@ snippet: Test_ManagedString_Wide_CS
 
 ## Usage of unsafe managed code to access native objects
 
-### Native
+**Native**
 
 snippet: Test_ManagedUnsafe_CPP
 
-### Managed
+**Managed**
 
 snippet: Test_ManagedUnsafe_CS
 
@@ -183,7 +183,7 @@ snippet: Test_ManagedUnsafe_CS
 
 ## Native arrays using fixed struct member
 
-### Native
+**Native**
 
 snippet: Test_NativeArray_Args_CPP
 
@@ -191,7 +191,7 @@ snippet: Test_NativeArray_Args_Data_CPP
 
 snippet: Test_NativeArray_StructFixed_CPP
 
-### Managed
+**Managed**
 
 snippet: Test_NativeArray_StructFixed_CS
 
@@ -199,11 +199,11 @@ snippet: Test_NativeArray_StructFixed_CS
 
 ## Native arrays using pointer
 
-### Native
+**Native**
 
 snippet: Test_NativeArray_ArgumentFixed_CPP
 
-### Managed
+**Managed**
 
 snippet: Test_NativeArray_ArgumentFixed_CS
 
@@ -211,11 +211,11 @@ snippet: Test_NativeArray_ArgumentFixed_CS
 
 ## Native arrays using ArrPointerX on function-pointer
 
-### Native
+**Native**
 
 snippet: Test_NativeArray_ArgumentFixed_FunctionPointer_CPP
 
-### Managed
+**Managed**
 
 snippet: Test_NativeArray_ArgumentFixed_FunctionPointer_CS
 
@@ -223,7 +223,7 @@ snippet: Test_NativeArray_ArgumentFixed_FunctionPointer_CS
 
 ## Calling checked native function pointer
 
-### Native
+**Native**
 
 snippet: Test_NativeFunctionPointer_CallbackFunc_CPP
 
@@ -231,7 +231,7 @@ snippet: Test_NativeFunctionPointer_CallbackPointer_CPP
 
 snippet: Test_NativeFunctionPointer_CallbackFunc_Checked_CPP
 
-### Managed
+**Managed**
 
 snippet: Test_NativeFunctionPointer_Checked_CS
 
@@ -239,7 +239,7 @@ snippet: Test_NativeFunctionPointer_Checked_CS
 
 ## Calling unchecked native function pointer
 
-### Native
+**Native**
 
 snippet: Test_NativeFunctionPointer_CallbackFunc_CPP
 
@@ -247,7 +247,7 @@ snippet: Test_NativeFunctionPointer_CallbackPointer_CPP
 
 snippet: Test_NativeFunctionPointer_CallbackFunc_Unchecked_CPP
 
-### Managed
+**Managed**
 
 snippet: Test_NativeFunctionPointer_Unchecked_CS
 
@@ -255,11 +255,11 @@ snippet: Test_NativeFunctionPointer_Unchecked_CS
 
 ## Native ASCII string
 
-### Native
+**Native**
 
 snippet: Test_NativeString_Ansi_CPP
 
-### Managed
+**Managed**
 
 snippet: Test_NativeString_Ansi_CS
 
@@ -267,11 +267,11 @@ snippet: Test_NativeString_Ansi_CS
 
 ## Native Wide string
 
-### Native
+**Native**
 
 snippet: Test_NativeString_Wide_CPP
 
-### Managed
+**Managed**
 
 snippet: Test_NativeString_Wide_CS
 
@@ -279,11 +279,11 @@ snippet: Test_NativeString_Wide_CS
 
 ## Native string to managed function pointer
 
-### Native
+**Native**
 
 snippet: Test_NativeString_FunctionPointer_CPP
 
-### Managed
+**Managed**
 
 snippet: Test_NativeString_FunctionPointer_CPP
 
@@ -293,13 +293,13 @@ dotnet_runtime_test is licensed under MIT license. See [LICENSE](./LICENSE) for 
 
 
 <!--
-### Managed custom-entrypoint
+**Managed** custom-entrypoint
 
-#### Native
+#**Native**
 
 -snippet: ToDo
 
-#### Managed
+#**Managed**
 
 -snippet: ToDo
 -->
