@@ -209,7 +209,7 @@ snippet: Test_NativeArray_ArgumentFixed_CS
 
 ---
 
-## Native arrays using pointer
+## Native arrays using ArrPointerX on function-pointer
 
 ### Native
 

@@ -53,7 +53,7 @@ This repo contains a project with examples for using a embedded .NET runtime in 
    * [Native arrays using pointer](#native-arrays-using-pointer)
       * [Native](#native-8)
       * [Managed](#managed-8)
-   * [Native arrays using pointer](#native-arrays-using-pointer-1)
+   * [Native arrays using ArrPointerX on function-pointer](#native-arrays-using-arrpointerx-on-function-pointer)
       * [Native](#native-9)
       * [Managed](#managed-9)
    * [Calling checked native function pointer](#calling-checked-native-function-pointer)
@@ -73,7 +73,7 @@ This repo contains a project with examples for using a embedded .NET runtime in 
       * [Managed](#managed-14)
 * [LICENSE](#license)
 
-<!-- Added by: kevin, at: Mon Jul 19 15:51:58 CEST 2021 -->
+<!-- Added by: kevin, at: Mon Jul 19 16:00:31 CEST 2021 -->
 
 <!--te-->
 
@@ -706,7 +706,7 @@ public static int Test_NativeArray_ArgumentFixed(IntPtr arrPtr, int multiplier)
 
 ---
 
-## Native arrays using pointer
+## Native arrays using ArrPointerX on function-pointer
 
 ### Native
 
