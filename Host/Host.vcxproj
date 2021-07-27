@@ -155,6 +155,7 @@
     <ClInclude Include="Test_ManagedString.h" />
     <ClInclude Include="Test_ManagedUnsafe.h" />
     <ClInclude Include="Test_NativeArray.h" />
+    <ClInclude Include="Test_NativeExport.h" />
     <ClInclude Include="Test_NativeFunctionPointer.h" />
     <ClInclude Include="Test_NativeString.h" />
   </ItemGroup>

@@ -382,7 +382,7 @@ snippet: Test_NativeString_FunctionPointer_CS
 
 ---
 
-## Calling native exportes symbols using `DllExport`
+## Calling native exported symbols using `DllExport`
 
 <details><summary>Native</summary>
 <p>
@@ -399,6 +399,28 @@ snippet: Test_DllImport_Call_CPP
 <p>
 
 snippet: Test_DllImport_CS
+</p>
+</details>
+
+---
+
+## Calling native exported symbols using `GetProcAddress`/`dlsym`
+
+<details><summary>Native</summary>
+<p>
+
+snippet: Test_NativeExport_Export_CPP
+
+snippet: Test_NativeExport_Call_CPP
+
+> For posix systems, use the `-export-dynamic` flag for the linker.
+</p>
+</details>
+
+<details><summary>Managed</summary>
+<p>
+
+snippet: Test_NativeExport_CS
 </p>
 </details>
 

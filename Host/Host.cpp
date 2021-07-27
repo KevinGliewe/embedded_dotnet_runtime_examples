@@ -12,6 +12,7 @@
 #include "Test_NativeFunctionPointer.h"
 #include "Test_ManagedFunctionPointer.h"
 #include "Test_DllImport.h"
+#include "Test_NativeExport.h"
 #include "Test_NativeArray.h"
 #include "Test_NativeString.h"
 #include "Test_ManagedString.h"
@@ -101,6 +102,7 @@ int main(int argc, char *argv[])
     RUN_TEST(Test_ManagedString);
     RUN_TEST(Test_ManagedUnsafe);
     RUN_TEST(Test_DllImport);
+    RUN_TEST(Test_NativeExport);
 	
 
     std::wcout << "Success: " << (success ? "true" : "false") << std::endl;

@@ -41,7 +41,8 @@ This repo contains a project with examples for using a embedded .NET runtime in 
    * [Native ASCII string](#native-ascii-string)
    * [Native Wide string](#native-wide-string)
    * [Native string to managed function pointer](#native-string-to-managed-function-pointer)
-   * [Calling native exportes symbols using DllExport](#calling-native-exportes-symbols-using-dllexport)
+   * [Calling native exported symbols using DllExport](#calling-native-exported-symbols-using-dllexport)
+   * [Calling native exported symbols using GetProcAddress/dlsym](#calling-native-exported-symbols-using-getprocaddressdlsym)
 * [LICENSE](#license)
 <!--te-->
 
@@ -103,7 +104,7 @@ auto runtime = dotnet_runtime::Runtime(hostfxr_path, libRuntimeconfig_path);
 
 auto lib = dotnet_runtime::Library(&runtime, libDll_path, STR("Lib"));
 ```
-<sup><a href='/Host/Host.cpp#L85-L91' title='Snippet source file'>snippet source</a> | <a href='#snippet-initruntimeandlib' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/Host/Host.cpp#L86-L92' title='Snippet source file'>snippet source</a> | <a href='#snippet-initruntimeandlib' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 ---
@@ -1085,7 +1086,7 @@ public static void Test_NativeString_FunctionPointer(IntPtr retArgsPtr)
 
 ---
 
-## Calling native exportes symbols using `DllExport`
+## Calling native exported symbols using `DllExport`
 
 <details><summary>Native</summary>
 <p>
@@ -1145,6 +1146,71 @@ public static int Test_DllImport_Call(IntPtr moduleHandle, int number)
 }
 ```
 <sup><a href='/Lib/Test_DllImport.cs#L10-L31' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_dllimport_cs' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
+</p>
+</details>
+
+---
+
+## Calling native exported symbols using `GetProcAddress`/`dlsym`
+
+<details><summary>Native</summary>
+<p>
+
+<!-- snippet: Test_NativeExport_Export_CPP -->
+<a id='snippet-test_nativeexport_export_cpp'></a>
+```h
+extern "C"
+{
+	int FEXPORT Test_NativeExport_ExternC(int number)
+	{
+		return number * 4;
+	}
+}
+```
+<sup><a href='/Host/Test_NativeExport.h#L5-L13' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativeexport_export_cpp' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
+
+<!-- snippet: Test_NativeExport_Call_CPP -->
+<a id='snippet-test_nativeexport_call_cpp'></a>
+```h
+void* host_handle = dotnet_runtime::get_host_handle();
+return fpTest_NativeExport_Call(host_handle, 4) == 16;
+```
+<sup><a href='/Host/Test_NativeExport.h#L28-L31' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativeexport_call_cpp' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
+
+> For posix systems, use the `-export-dynamic` flag for the linker.
+</p>
+</details>
+
+<details><summary>Managed</summary>
+<p>
+
+<!-- snippet: Test_NativeExport_CS -->
+<a id='snippet-test_nativeexport_cs'></a>
+```cs
+public delegate int FunctionPointerCallbackDelegate(int a);
+
+[UnmanagedCallersOnly]
+public static int Test_NativeExport_Call(IntPtr moduleHandle, int number)
+{
+    var exportedDelegate = ModuleLoader.GetExport<FunctionPointerCallbackDelegate>(moduleHandle, "Test_NativeExport_ExternC");
+    int result = exportedDelegate(number);
+
+    unsafe
+    {
+        unchecked
+        {
+            var callbackFuncPtr = (delegate* unmanaged[Cdecl]<int, int>)ModuleLoader.GetExport(moduleHandle, "Test_NativeExport_ExternC");
+            result += callbackFuncPtr(number);
+        }
+    }
+
+    return result / 2;
+}
+```
+<sup><a href='/Lib/Test_NativeExport.cs#L10-L30' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativeexport_cs' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 </p>
 </details>

@@ -47,5 +47,8 @@
     <ClInclude Include="Test_ManagedUnsafe.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="Test_NativeExport.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
