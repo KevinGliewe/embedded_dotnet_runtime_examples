@@ -7,6 +7,7 @@ namespace LibNamespace
 {
     public static class Test_DllImport
     {
+        // begin-snippet: Test_DllImport_CS
         private static IntPtr s_moduleHandle = IntPtr.Zero;
 
         private static IntPtr ImportResolver(string libraryName, Assembly assembly, DllImportSearchPath? searchPath)
@@ -27,5 +28,6 @@ namespace LibNamespace
 
             return Test_DllImport_ExternC(number);
         }
+        // end-snippet
     }
 }

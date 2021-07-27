@@ -2,7 +2,7 @@
 
 #include "Common.h"
 
-
+// begin-snippet: Test_DllImport_Export_CPP
 extern "C"
 {
 	int FEXPORT Test_DllImport_ExternC(int number)
@@ -10,6 +10,7 @@ extern "C"
 		return number * 2;
 	}
 }
+// end-snippet
 
 namespace Test_DllImport
 {
@@ -24,8 +25,9 @@ namespace Test_DllImport
 			STR("Test_DllImport_Call")
 		);
 
+		// begin-snippet: Test_DllImport_Call_CPP
 		void* host_handle = dotnet_runtime::get_host_handle();
 		return fpTest_DllImport_Call(host_handle, 4) == 8;
-
+		// end-snippet
 	}
 }

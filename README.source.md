@@ -66,19 +66,25 @@ snippet: InitRuntimeAndLib
 
 > Entrypoints can only use [blittable types](https://en.wikipedia.org/wiki/Blittable_types)
 
-**Native**
+<details><summary>Native</summary>
+<p>
 
 snippet: Test_ManagedEntryPoint_Args_CPP
 
 snippet: Test_ManagedEntryPoint_ComponentEntryPoint_CPP
+</p>
+</details>
 
-**Managed**
+<details><summary>Managed</summary>
+<p>
 
 snippet: Test_ManagedEntryPoint_Args_CS
 
 > Component-entrypoints always have this signature: `static int <NAME>(IntPtr, int)`
 
 snippet: Test_ManagedEntryPoint_ComponentEntryPoint_CS
+</p>
+</details>
 
 ---
 
@@ -86,61 +92,84 @@ snippet: Test_ManagedEntryPoint_ComponentEntryPoint_CS
 
 > Entrypoints can only use [blittable types](https://en.wikipedia.org/wiki/Blittable_types)
 
-**Native**
+<details><summary>Native</summary>
+<p>
 
 snippet: Test_ManagedEntryPoint_Args_CPP
 
 snippet: Test_ManagedEntryPoint_CustomEntryPoint_CPP
+</p>
+</details>
 
-**Managed**
+<details><summary>Managed</summary>
+<p>
 
 snippet: Test_ManagedEntryPoint_Args_CS
 
 snippet: Test_ManagedEntryPoint_CustomEntryPoint_CS
+</p>
+</details>
 
 ---
 
 ## Managed function-pointer to instance method
 
-**Native**
+<details><summary>Native</summary>
+<p>
 
 snippet: Test_ManagedFunctionPointer_Typedef_managed_callback_fn_CPP
 
 snippet: Test_ManagedFunctionPointer_Instance_CPP
+</p>
+</details>
 
-**Managed**
+<details><summary>Managed</summary>
+<p>
 
 snippet: Test_ManagedFunctionPointer_FunctionPointerCallbackDelegate_CS
 
 snippet: Test_ManagedFunctionPointer_Instance_CS
-
+</p>
+</details>
 ---
 
 ## Managed function-pointer to static function
 
-**Native**
+<details><summary>Native</summary>
+<p>
 
 snippet: Test_ManagedFunctionPointer_Typedef_managed_callback_fn_CPP
 
 snippet: Test_ManagedFunctionPointer_Static_CPP
+</p>
+</details>
 
-**Managed**
+<details><summary>Managed</summary>
+<p>
 
 snippet: Test_ManagedFunctionPointer_FunctionPointerCallbackDelegate_CS
 
 snippet: Test_ManagedFunctionPointer_Static_CS
+</p>
+</details>
 
 ---
 
 ## Return managed ASCII string
 
-**Native**
+<details><summary>Native</summary>
+<p>
 
 snippet: Test_ManagedString_Ansi_CPP
+</p>
+</details>
 
-**Managed**
+<details><summary>Managed</summary>
+<p>
 
 snippet: Test_ManagedString_Ansi_CS
+</p>
+</details>
 
 What does CString do?
  1. Apends a `\0` character on the end of the string.
@@ -154,11 +183,15 @@ What does CString do?
 
 > The encoding depends on the platform. For windows systems it is UTF16 and for posix systems it is UTF32.
 
-**Native**
+<details><summary>Native</summary>
+<p>
 
 snippet: Test_ManagedString_Wide_CPP
+</p>
+</details>
 
-**Managed**
+<details><summary>Managed</summary>
+<p>
 
 What does CString do?
  1. Determins the correct encoding for the current platform. (UTF16 or UTF32)
@@ -168,128 +201,206 @@ What does CString do?
  5. Copy the encoded string into the allocated memory.
 
 snippet: Test_ManagedString_Wide_CS
+</p>
+</details>
 
 ---
 
 ## Usage of unsafe managed code to access native objects
 
-**Native**
+<details><summary>Native</summary>
+<p>
 
 snippet: Test_ManagedUnsafe_CPP
+</p>
+</details>
 
-**Managed**
+<details><summary>Managed</summary>
+<p>
 
 snippet: Test_ManagedUnsafe_CS
+</p>
+</details>
 
 ---
 
 ## Native arrays using fixed struct member
 
-**Native**
+<details><summary>Native</summary>
+<p>
 
 snippet: Test_NativeArray_Args_CPP
 
 snippet: Test_NativeArray_Args_Data_CPP
 
 snippet: Test_NativeArray_StructFixed_CPP
+</p>
+</details>
 
-**Managed**
+<details><summary>Managed</summary>
+<p>
 
 snippet: Test_NativeArray_StructFixed_CS
+</p>
+</details>
 
 ---
 
 ## Native arrays using pointer
 
-**Native**
+<details><summary>Native</summary>
+<p>
 
 snippet: Test_NativeArray_ArgumentFixed_CPP
+</p>
+</details>
 
-**Managed**
+<details><summary>Managed</summary>
+<p>
 
 snippet: Test_NativeArray_ArgumentFixed_CS
+</p>
+</details>
 
 ---
 
 ## Native arrays using ArrPointerX on function-pointer
 
-**Native**
+<details><summary>Native</summary>
+<p>
 
 snippet: Test_NativeArray_ArgumentFixed_FunctionPointer_CPP
+</p>
+</details>
 
-**Managed**
+<details><summary>Managed</summary>
+<p>
 
 snippet: Test_NativeArray_ArgumentFixed_FunctionPointer_CS
+</p>
+</details>
 
 ---
 
 ## Calling checked native function pointer
 
-**Native**
+<details><summary>Native</summary>
+<p>
 
 snippet: Test_NativeFunctionPointer_CallbackFunc_CPP
 
 snippet: Test_NativeFunctionPointer_CallbackPointer_CPP
 
 snippet: Test_NativeFunctionPointer_CallbackFunc_Checked_CPP
+</p>
+</details>
 
-**Managed**
+<details><summary>Managed</summary>
+<p>
 
 snippet: Test_NativeFunctionPointer_Checked_CS
+</p>
+</details>
 
 ---
 
 ## Calling unchecked native function pointer
 
-**Native**
+<details><summary>Native</summary>
+<p>
 
 snippet: Test_NativeFunctionPointer_CallbackFunc_CPP
 
 snippet: Test_NativeFunctionPointer_CallbackPointer_CPP
 
 snippet: Test_NativeFunctionPointer_CallbackFunc_Unchecked_CPP
+</p>
+</details>
 
-**Managed**
+<details><summary>Managed</summary>
+<p>
 
 snippet: Test_NativeFunctionPointer_Unchecked_CS
+</p>
+</details>
 
 ---
 
 ## Native ASCII string
 
-**Native**
+<details><summary>Native</summary>
+<p>
 
 snippet: Test_NativeString_Ansi_CPP
+</p>
+</details>
 
-**Managed**
+<details><summary>Managed</summary>
+<p>
 
 snippet: Test_NativeString_Ansi_CS
+</p>
+</details>
 
 ---
 
 ## Native Wide string
 
-**Native**
+<details><summary>Native</summary>
+<p>
 
 snippet: Test_NativeString_Wide_CPP
+</p>
+</details>
 
-**Managed**
+<details><summary>Managed</summary>
+<p>
 
 snippet: Test_NativeString_Wide_CS
+</p>
+</details>
 
 ---
 
 ## Native string to managed function pointer
 
-**Native**
+<details><summary>Native</summary>
+<p>
 
 snippet: Test_NativeString_RetArgs_CPP
 
 snippet: Test_NativeString_FunctionPointer_CPP
+</p>
+</details>
 
-**Managed**
+<details><summary>Managed</summary>
+<p>
 
 snippet: Test_NativeString_FunctionPointer_CS
+</p>
+</details>
+
+---
+
+## Calling native exportes symbols using `DllExport`
+
+<details><summary>Native</summary>
+<p>
+
+snippet: Test_DllImport_Export_CPP
+
+snippet: Test_DllImport_Call_CPP
+
+> For posix systems, use the `-export-dynamic` flag for the linker.
+</p>
+</details>
+
+<details><summary>Managed</summary>
+<p>
+
+snippet: Test_DllImport_CS
+</p>
+</details>
 
 # LICENSE
 
@@ -297,13 +408,16 @@ dotnet_runtime_test is licensed under MIT license. See [LICENSE](./LICENSE) for 
 
 
 <!--
-**Managed** custom-entrypoint
+<details><summary>Managed</summary>
+<p> custom-entrypoint
 
-#**Native**
+#<details><summary>Native</summary>
+<p>
 
 -snippet: ToDo
 
-#**Managed**
+#<details><summary>Managed</summary>
+<p>
 
 -snippet: ToDo
 -->

@@ -11,7 +11,7 @@
         {
             "label": "toc",
             "type": "shell",
-            "command": "docker run -it -v ${workspaceFolderBasename}:/data vemonet/markdown-toc-generator --insert --no-backup --hide-footer /data/README.md"
+            "command": "docker run -v ${workspaceFolder}:/data killergoldfisch/github-markdown-toc --insert --no-backup --hide-footer /data/README.md"
         }
     ]
 }

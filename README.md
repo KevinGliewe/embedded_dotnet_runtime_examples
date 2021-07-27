@@ -41,6 +41,7 @@ This repo contains a project with examples for using a embedded .NET runtime in 
    * [Native ASCII string](#native-ascii-string)
    * [Native Wide string](#native-wide-string)
    * [Native string to managed function pointer](#native-string-to-managed-function-pointer)
+   * [Calling native exportes symbols using DllExport](#calling-native-exportes-symbols-using-dllexport)
 * [LICENSE](#license)
 <!--te-->
 
@@ -111,7 +112,8 @@ auto lib = dotnet_runtime::Library(&runtime, libDll_path, STR("Lib"));
 
 > Entrypoints can only use [blittable types](https://en.wikipedia.org/wiki/Blittable_types)
 
-**Native**
+<details><summary>Native</summary>
+<p>
 
 <!-- snippet: Test_ManagedEntryPoint_Args_CPP -->
 <a id='snippet-test_managedentrypoint_args_cpp'></a>
@@ -138,8 +140,11 @@ LogTest(success, L"Test_ComponentEntryPoint");
 ```
 <sup><a href='/Host/Test_ManagedEntryPoint.h#L24-L34' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_managedentrypoint_componententrypoint_cpp' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
+</p>
+</details>
 
-**Managed**
+<details><summary>Managed</summary>
+<p>
 
 <!-- snippet: Test_ManagedEntryPoint_Args_CS -->
 <a id='snippet-test_managedentrypoint_args_cs'></a>
@@ -173,6 +178,8 @@ public static int Test_ComponentEntryPoint(IntPtr arg, int argLength)
 ```
 <sup><a href='/Lib/Test_ManagedEntryPoint.cs#L18-L30' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_managedentrypoint_componententrypoint_cs' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
+</p>
+</details>
 
 ---
 
@@ -180,7 +187,8 @@ public static int Test_ComponentEntryPoint(IntPtr arg, int argLength)
 
 > Entrypoints can only use [blittable types](https://en.wikipedia.org/wiki/Blittable_types)
 
-**Native**
+<details><summary>Native</summary>
+<p>
 
 <!-- snippet: Test_ManagedEntryPoint_Args_CPP -->
 <a id='snippet-test_managedentrypoint_args_cpp'></a>
@@ -209,8 +217,11 @@ LogTest(success, L"Test_CustomEntryPoint");
 ```
 <sup><a href='/Host/Test_ManagedEntryPoint.h#L40-L52' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_managedentrypoint_customentrypoint_cpp' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
+</p>
+</details>
 
-**Managed**
+<details><summary>Managed</summary>
+<p>
 
 <!-- snippet: Test_ManagedEntryPoint_Args_CS -->
 <a id='snippet-test_managedentrypoint_args_cs'></a>
@@ -236,12 +247,15 @@ public static int Test_CustomEntryPoint(Args args)
 ```
 <sup><a href='/Lib/Test_ManagedEntryPoint.cs#L32-L38' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_managedentrypoint_customentrypoint_cs' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
+</p>
+</details>
 
 ---
 
 ## Managed function-pointer to instance method
 
-**Native**
+<details><summary>Native</summary>
+<p>
 
 <!-- snippet: Test_ManagedFunctionPointer_Typedef_managed_callback_fn_CPP -->
 <a id='snippet-test_managedfunctionpointer_typedef_managed_callback_fn_cpp'></a>
@@ -271,8 +285,11 @@ LogTest(success, L"Test_ManagedFunctionPointer_Instance");
 ```
 <sup><a href='/Host/Test_ManagedFunctionPointer.h#L16-L33' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_managedfunctionpointer_instance_cpp' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
+</p>
+</details>
 
-**Managed**
+<details><summary>Managed</summary>
+<p>
 
 <!-- snippet: Test_ManagedFunctionPointer_FunctionPointerCallbackDelegate_CS -->
 <a id='snippet-test_managedfunctionpointer_functionpointercallbackdelegate_cs'></a>
@@ -315,12 +332,14 @@ public static IntPtr Test_ManagedFunctionPointer_Instance(int member)
 ```
 <sup><a href='/Lib/Test_ManagedFunctionPointer.cs#L13-L44' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_managedfunctionpointer_instance_cs' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
-
+</p>
+</details>
 ---
 
 ## Managed function-pointer to static function
 
-**Native**
+<details><summary>Native</summary>
+<p>
 
 <!-- snippet: Test_ManagedFunctionPointer_Typedef_managed_callback_fn_CPP -->
 <a id='snippet-test_managedfunctionpointer_typedef_managed_callback_fn_cpp'></a>
@@ -350,8 +369,11 @@ LogTest(success, L"Test_ManagedFunctionPointer_Static");
 ```
 <sup><a href='/Host/Test_ManagedFunctionPointer.h#L38-L55' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_managedfunctionpointer_static_cpp' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
+</p>
+</details>
 
-**Managed**
+<details><summary>Managed</summary>
+<p>
 
 <!-- snippet: Test_ManagedFunctionPointer_FunctionPointerCallbackDelegate_CS -->
 <a id='snippet-test_managedfunctionpointer_functionpointercallbackdelegate_cs'></a>
@@ -377,12 +399,15 @@ public static IntPtr Test_ManagedFunctionPointer_Static()
 ```
 <sup><a href='/Lib/Test_ManagedFunctionPointer.cs#L46-L60' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_managedfunctionpointer_static_cs' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
+</p>
+</details>
 
 ---
 
 ## Return managed ASCII string
 
-**Native**
+<details><summary>Native</summary>
+<p>
 
 <!-- snippet: Test_ManagedString_Ansi_CPP -->
 <a id='snippet-test_managedstring_ansi_cpp'></a>
@@ -401,8 +426,11 @@ LogTest(success, L"Test_ManagedString_Ansi");
 ```
 <sup><a href='/Host/Test_ManagedString.h#L17-L31' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_managedstring_ansi_cpp' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
+</p>
+</details>
 
-**Managed**
+<details><summary>Managed</summary>
+<p>
 
 <!-- snippet: Test_ManagedString_Ansi_CS -->
 <a id='snippet-test_managedstring_ansi_cs'></a>
@@ -417,6 +445,8 @@ public static IntPtr Test_ManagedString_Ansi()
 ```
 <sup><a href='/Lib/Test_ManagedString.cs#L9-L17' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_managedstring_ansi_cs' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
+</p>
+</details>
 
 What does CString do?
  1. Apends a `\0` character on the end of the string.
@@ -430,7 +460,8 @@ What does CString do?
 
 > The encoding depends on the platform. For windows systems it is UTF16 and for posix systems it is UTF32.
 
-**Native**
+<details><summary>Native</summary>
+<p>
 
 <!-- snippet: Test_ManagedString_Wide_CPP -->
 <a id='snippet-test_managedstring_wide_cpp'></a>
@@ -449,8 +480,11 @@ LogTest(success, L"Test_ManagedString_Wide");
 ```
 <sup><a href='/Host/Test_ManagedString.h#L36-L50' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_managedstring_wide_cpp' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
+</p>
+</details>
 
-**Managed**
+<details><summary>Managed</summary>
+<p>
 
 What does CString do?
  1. Determins the correct encoding for the current platform. (UTF16 or UTF32)
@@ -472,12 +506,15 @@ public static IntPtr Test_ManagedString_Wide()
 ```
 <sup><a href='/Lib/Test_ManagedString.cs#L19-L27' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_managedstring_wide_cs' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
+</p>
+</details>
 
 ---
 
 ## Usage of unsafe managed code to access native objects
 
-**Native**
+<details><summary>Native</summary>
+<p>
 
 <!-- snippet: Test_ManagedUnsafe_CPP -->
 <a id='snippet-test_managedunsafe_cpp'></a>
@@ -523,8 +560,11 @@ bool Run(dotnet_runtime::Library& a_lib)
 ```
 <sup><a href='/Host/Test_ManagedUnsafe.h#L7-L47' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_managedunsafe_cpp' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
+</p>
+</details>
 
-**Managed**
+<details><summary>Managed</summary>
+<p>
 
 <!-- snippet: Test_ManagedUnsafe_CS -->
 <a id='snippet-test_managedunsafe_cs'></a>
@@ -559,12 +599,15 @@ public static void Test_ManagedUnsafe_Struct(IntPtr ptr)
 ```
 <sup><a href='/Lib/Test_ManagedUnsafe.cs#L9-L37' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_managedunsafe_cs' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
+</p>
+</details>
 
 ---
 
 ## Native arrays using fixed struct member
 
-**Native**
+<details><summary>Native</summary>
+<p>
 
 <!-- snippet: Test_NativeArray_Args_CPP -->
 <a id='snippet-test_nativearray_args_cpp'></a>
@@ -604,8 +647,11 @@ LogTest(success, L"Test_NativeArray_StructFixed");
 ```
 <sup><a href='/Host/Test_NativeArray.h#L27-L39' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativearray_structfixed_cpp' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
+</p>
+</details>
 
-**Managed**
+<details><summary>Managed</summary>
+<p>
 
 <!-- snippet: Test_NativeArray_StructFixed_CS -->
 <a id='snippet-test_nativearray_structfixed_cs'></a>
@@ -632,12 +678,15 @@ public static unsafe int Test_NativeArray_StructFixed(Args args)
 ```
 <sup><a href='/Lib/Test_NativeArray.cs#L10-L31' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativearray_structfixed_cs' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
+</p>
+</details>
 
 ---
 
 ## Native arrays using pointer
 
-**Native**
+<details><summary>Native</summary>
+<p>
 
 <!-- snippet: Test_NativeArray_ArgumentFixed_CPP -->
 <a id='snippet-test_nativearray_argumentfixed_cpp'></a>
@@ -654,8 +703,11 @@ LogTest(success, L"Test_NativeArray_ArgumentFixed");
 ```
 <sup><a href='/Host/Test_NativeArray.h#L45-L57' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativearray_argumentfixed_cpp' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
+</p>
+</details>
 
-**Managed**
+<details><summary>Managed</summary>
+<p>
 
 <!-- snippet: Test_NativeArray_ArgumentFixed_CS -->
 <a id='snippet-test_nativearray_argumentfixed_cs'></a>
@@ -672,12 +724,15 @@ public static int Test_NativeArray_ArgumentFixed(IntPtr arrPtr, int multiplier)
 ```
 <sup><a href='/Lib/Test_NativeArray.cs#L33-L44' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativearray_argumentfixed_cs' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
+</p>
+</details>
 
 ---
 
 ## Native arrays using ArrPointerX on function-pointer
 
-**Native**
+<details><summary>Native</summary>
+<p>
 
 <!-- snippet: Test_NativeArray_ArgumentFixed_FunctionPointer_CPP -->
 <a id='snippet-test_nativearray_argumentfixed_functionpointer_cpp'></a>
@@ -697,8 +752,11 @@ LogTest(success, L"Test_NativeArray_ArgumentFixed_FunctionPointer");
 ```
 <sup><a href='/Host/Test_NativeArray.h#L62-L77' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativearray_argumentfixed_functionpointer_cpp' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
+</p>
+</details>
 
-**Managed**
+<details><summary>Managed</summary>
+<p>
 
 <!-- snippet: Test_NativeArray_ArgumentFixed_FunctionPointer_CS -->
 <a id='snippet-test_nativearray_argumentfixed_functionpointer_cs'></a>
@@ -718,12 +776,15 @@ public static IntPtr Test_NativeArray_ArgumentFixed_FunctionPointer()
 ```
 <sup><a href='/Lib/Test_NativeArray.cs#L46-L59' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativearray_argumentfixed_functionpointer_cs' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
+</p>
+</details>
 
 ---
 
 ## Calling checked native function pointer
 
-**Native**
+<details><summary>Native</summary>
+<p>
 
 <!-- snippet: Test_NativeFunctionPointer_CallbackFunc_CPP -->
 <a id='snippet-test_nativefunctionpointer_callbackfunc_cpp'></a>
@@ -757,8 +818,11 @@ LogTest(success, L"Test_NativeFunctionPointer_Checked");
 ```
 <sup><a href='/Host/Test_NativeFunctionPointer.h#L26-L36' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativefunctionpointer_callbackfunc_checked_cpp' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
+</p>
+</details>
 
-**Managed**
+<details><summary>Managed</summary>
+<p>
 
 <!-- snippet: Test_NativeFunctionPointer_Checked_CS -->
 <a id='snippet-test_nativefunctionpointer_checked_cs'></a>
@@ -776,12 +840,15 @@ public static int Test_NativeFunctionPointer_Checked(IntPtr nativeFunctionPtr, i
 ```
 <sup><a href='/Lib/Test_NativeFunctionPointer.cs#L8-L19' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativefunctionpointer_checked_cs' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
+</p>
+</details>
 
 ---
 
 ## Calling unchecked native function pointer
 
-**Native**
+<details><summary>Native</summary>
+<p>
 
 <!-- snippet: Test_NativeFunctionPointer_CallbackFunc_CPP -->
 <a id='snippet-test_nativefunctionpointer_callbackfunc_cpp'></a>
@@ -815,8 +882,11 @@ LogTest(success, L"Test_NativeFunctionPointer_Unchecked");
 ```
 <sup><a href='/Host/Test_NativeFunctionPointer.h#L41-L51' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativefunctionpointer_callbackfunc_unchecked_cpp' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
+</p>
+</details>
 
-**Managed**
+<details><summary>Managed</summary>
+<p>
 
 <!-- snippet: Test_NativeFunctionPointer_Unchecked_CS -->
 <a id='snippet-test_nativefunctionpointer_unchecked_cs'></a>
@@ -836,12 +906,15 @@ public static int Test_NativeFunctionPointer_Unchecked(IntPtr nativeFunctionPtr,
 ```
 <sup><a href='/Lib/Test_NativeFunctionPointer.cs#L21-L34' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativefunctionpointer_unchecked_cs' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
+</p>
+</details>
 
 ---
 
 ## Native ASCII string
 
-**Native**
+<details><summary>Native</summary>
+<p>
 
 <!-- snippet: Test_NativeString_Ansi_CPP -->
 <a id='snippet-test_nativestring_ansi_cpp'></a>
@@ -856,8 +929,11 @@ LogTest(success, L"Test_NativeString_Ansi");
 ```
 <sup><a href='/Host/Test_NativeString.h#L22-L32' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativestring_ansi_cpp' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
+</p>
+</details>
 
-**Managed**
+<details><summary>Managed</summary>
+<p>
 
 <!-- snippet: Test_NativeString_Ansi_CS -->
 <a id='snippet-test_nativestring_ansi_cs'></a>
@@ -870,12 +946,15 @@ public static int Test_NativeString_Ansi(IntPtr stringPtr)
 ```
 <sup><a href='/Lib/Test_NativeString.cs#L12-L18' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativestring_ansi_cs' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
+</p>
+</details>
 
 ---
 
 ## Native Wide string
 
-**Native**
+<details><summary>Native</summary>
+<p>
 
 <!-- snippet: Test_NativeString_Wide_CPP -->
 <a id='snippet-test_nativestring_wide_cpp'></a>
@@ -890,8 +969,11 @@ LogTest(success, L"Test_NativeString_Wide");
 ```
 <sup><a href='/Host/Test_NativeString.h#L37-L47' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativestring_wide_cpp' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
+</p>
+</details>
 
-**Managed**
+<details><summary>Managed</summary>
+<p>
 
 <!-- snippet: Test_NativeString_Wide_CS -->
 <a id='snippet-test_nativestring_wide_cs'></a>
@@ -904,12 +986,15 @@ public static int Test_NativeString_Wide(IntPtr stringPtr)
 ```
 <sup><a href='/Lib/Test_NativeString.cs#L20-L26' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativestring_wide_cs' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
+</p>
+</details>
 
 ---
 
 ## Native string to managed function pointer
 
-**Native**
+<details><summary>Native</summary>
+<p>
 
 <!-- snippet: Test_NativeString_RetArgs_CPP -->
 <a id='snippet-test_nativestring_retargs_cpp'></a>
@@ -952,8 +1037,11 @@ fpTest_NativeString_FunctionPointer(&retArgs);
 ```
 <sup><a href='/Host/Test_NativeString.h#L52-L78' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativestring_functionpointer_cpp' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
+</p>
+</details>
 
-**Managed**
+<details><summary>Managed</summary>
+<p>
 
 <!-- snippet: Test_NativeString_FunctionPointer_CS -->
 <a id='snippet-test_nativestring_functionpointer_cs'></a>
@@ -992,6 +1080,74 @@ public static void Test_NativeString_FunctionPointer(IntPtr retArgsPtr)
 ```
 <sup><a href='/Lib/Test_NativeString.cs#L29-L62' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativestring_functionpointer_cs' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
+</p>
+</details>
+
+---
+
+## Calling native exportes symbols using `DllExport`
+
+<details><summary>Native</summary>
+<p>
+
+<!-- snippet: Test_DllImport_Export_CPP -->
+<a id='snippet-test_dllimport_export_cpp'></a>
+```h
+extern "C"
+{
+	int FEXPORT Test_DllImport_ExternC(int number)
+	{
+		return number * 2;
+	}
+}
+```
+<sup><a href='/Host/Test_DllImport.h#L5-L13' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_dllimport_export_cpp' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
+
+<!-- snippet: Test_DllImport_Call_CPP -->
+<a id='snippet-test_dllimport_call_cpp'></a>
+```h
+void* host_handle = dotnet_runtime::get_host_handle();
+return fpTest_DllImport_Call(host_handle, 4) == 8;
+```
+<sup><a href='/Host/Test_DllImport.h#L28-L31' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_dllimport_call_cpp' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
+
+> For posix systems, use the `-export-dynamic` flag for the linker.
+</p>
+</details>
+
+<details><summary>Managed</summary>
+<p>
+
+<!-- snippet: Test_DllImport_CS -->
+<a id='snippet-test_dllimport_cs'></a>
+```cs
+private static IntPtr s_moduleHandle = IntPtr.Zero;
+
+private static IntPtr ImportResolver(string libraryName, Assembly assembly, DllImportSearchPath? searchPath)
+{
+    IntPtr ret = libraryName == "Test_DllImport_LibName" ? s_moduleHandle : NativeLibrary.Load(libraryName, assembly, searchPath);
+    //Console.WriteLine($"ImportResolver s_moduleHandle={s_moduleHandle} ret={ret}");
+    return ret;
+}
+
+[DllImport("Test_DllImport_LibName")]
+public static extern int Test_DllImport_ExternC(int number);
+
+[UnmanagedCallersOnly]
+public static int Test_DllImport_Call(IntPtr moduleHandle, int number)
+{
+    s_moduleHandle = moduleHandle;
+    NativeLibrary.SetDllImportResolver(typeof(Test_DllImport).Assembly, ImportResolver);
+
+    return Test_DllImport_ExternC(number);
+}
+```
+<sup><a href='/Lib/Test_DllImport.cs#L10-L31' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_dllimport_cs' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
+</p>
+</details>
 
 # LICENSE
 
@@ -999,13 +1155,16 @@ dotnet_runtime_test is licensed under MIT license. See [LICENSE](./LICENSE) for 
 
 
 <!--
-**Managed** custom-entrypoint
+<details><summary>Managed</summary>
+<p> custom-entrypoint
 
-#**Native**
+#<details><summary>Native</summary>
+<p>
 
 -snippet: ToDo
 
-#**Managed**
+#<details><summary>Managed</summary>
+<p>
 
 -snippet: ToDo
 -->
