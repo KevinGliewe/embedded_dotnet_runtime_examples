@@ -1,4 +1,13 @@
-if [ -f "dotnet_runtime/bin/linux/x64/dotnet" ]; then
+unameOut="$(uname -s)"
+case "${unameOut}" in
+    Linux*)     machine=linux;;
+    Darwin*)    machine=macos;;
+    CYGWIN*)    machine=cygwin;;
+    MINGW*)     machine=mingw;;
+    *)          machine="UNKNOWN:${unameOut}"
+esac
+
+if [ -f "dotnet_runtime/bin/${machine}/x64/dotnet" ]; then
     echo "runtime alrady installed"
 else 
     echo "runtime not installed"

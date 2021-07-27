@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.00)
 project(Host)
 
 set(CMAKE_CXX_STANDARD 14)
@@ -8,7 +8,13 @@ find_package(Threads REQUIRED)
 
 include_directories("../dotnet_runtime/includes")
 
-set(CMAKE_EXE_LINKER_FLAGS "-Wl,-export-dynamic")
+if(UNIX AND NOT APPLE)
+        set(LINUX TRUE)
+endif()
+
+if (LINUX)
+        set(CMAKE_EXE_LINKER_FLAGS "-Wl,-export-dynamic")
+endif (LINUX)
 
 add_executable(Host
         Host.cpp)

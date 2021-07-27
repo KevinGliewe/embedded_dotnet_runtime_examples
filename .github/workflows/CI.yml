@@ -17,7 +17,7 @@ jobs:
 
   run-msbuild:
     runs-on: windows-latest
-    name: Run MSBuild and Test
+    name: Run Windows
 
     steps:
       - name: Checkout code
@@ -42,7 +42,7 @@ jobs:
   
   run-linux:
     runs-on: ubuntu-latest
-    name: Run CMake and Test
+    name: Run Linux
 
     steps:
       - name: Checkout code
@@ -63,7 +63,31 @@ jobs:
       
       - name: Run build_run
         run: sh build_run.sh
-  
+
+  run-macos:
+    runs-on: macos-latest
+    name: Run MacOS
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2.1.0
+        id: checkout_code
+        with:
+          submodules: recursive
+
+      - name: Setup cmake
+        uses: jwlawson/actions-setup-cmake@v1.9
+        with:
+          cmake-version: '3.16.x'
+      
+      - name: Setup dotnet path
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '5.0.x'
+      
+      - name: Run build_run
+        run: sh build_run.sh
+
   readme:
     runs-on: ubuntu-latest
     name: Generate README.md
