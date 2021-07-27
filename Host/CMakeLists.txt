@@ -8,6 +8,8 @@ find_package(Threads REQUIRED)
 
 include_directories("../dotnet_runtime/includes")
 
+set(CMAKE_EXE_LINKER_FLAGS "-Wl,-export-dynamic")
+
 add_executable(Host
         Host.cpp)
 

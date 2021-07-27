@@ -100,10 +100,7 @@ int main(int argc, char *argv[])
     RUN_TEST(Test_NativeString);
     RUN_TEST(Test_ManagedString);
     RUN_TEST(Test_ManagedUnsafe);
-	
-#ifdef WIN32
     RUN_TEST(Test_DllImport);
-#endif
 	
 
     std::wcout << "Success: " << (success ? "true" : "false") << std::endl;
