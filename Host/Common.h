@@ -14,6 +14,9 @@
 
 using wstring_t = std::basic_string<wchar_t>;
 
+static dotnet_runtime::Runtime* g_pRuntime;
+static dotnet_runtime::Library* g_pLib;
+
 inline void LogTest(bool success, std::wstring name)
 {
 	std::wcout << (success ? "OK" : "ERR");

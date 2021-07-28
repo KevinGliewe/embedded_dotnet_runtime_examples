@@ -91,6 +91,9 @@ int main(int argc, char *argv[])
     auto lib = dotnet_runtime::Library(&runtime, libDll_path, STR("Lib"));
     // end-snippet
 
+    g_pRuntime = &runtime;
+    g_pLib = &lib;
+
     // Running tests
 
     bool success = true;
