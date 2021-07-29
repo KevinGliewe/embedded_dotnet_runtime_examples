@@ -17,6 +17,7 @@
 #include "Test_NativeString.h"
 #include "Test_ManagedString.h"
 #include "Test_ManagedUnsafe.h"
+#include "Test_NativeVTable.h"
 
 
 #define RUN_TEST(TESTNAME) \
@@ -106,6 +107,7 @@ int main(int argc, char *argv[])
     RUN_TEST(Test_ManagedUnsafe);
     RUN_TEST(Test_DllImport);
     RUN_TEST(Test_NativeExport);
+    RUN_TEST(Test_NativeVTable);
 	
 
     std::wcout << "Success: " << (success ? "true" : "false") << std::endl;

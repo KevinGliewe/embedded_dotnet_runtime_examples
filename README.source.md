@@ -424,22 +424,57 @@ snippet: Test_NativeExport_CS
 </p>
 </details>
 
+---
+
+## Calling native VTable from managed code
+
+<details><summary>Native</summary>
+<p>
+
+snippet: Test_NativeVTable_Class_CPP
+
+snippet: Test_NativeVTable_Call_CPP
+
+</p>
+</details>
+
+<details><summary>Managed</summary>
+<p>
+
+snippet: Test_NativeVTable_Class_CS
+
+snippet: Test_NativeVTable_ManagedCall_CS
+
+</p>
+</details>
+
+---
+
+## Overwriting native VTable with managed code
+
+<details><summary>Native</summary>
+<p>
+
+snippet: Test_NativeVTable_Class_CPP
+
+snippet: Test_NativeVTable_Call_CPP
+
+</p>
+</details>
+
+<details><summary>Managed</summary>
+<p>
+
+snippet: Test_NativeVTable_Class_CS
+
+snippet: Test_NativeVTable_Overwrite_CS
+
+snippet: Test_NativeVTable_ManagedOverwrite_CS
+
+</p>
+</details>
+<br/>
+
 # LICENSE
 
 dotnet_runtime_test is licensed under MIT license. See [LICENSE](./LICENSE) for more details.
-
-
-<!--
-<details><summary>Managed</summary>
-<p> custom-entrypoint
-
-#<details><summary>Native</summary>
-<p>
-
--snippet: ToDo
-
-#<details><summary>Managed</summary>
-<p>
-
--snippet: ToDo
--->

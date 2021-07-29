@@ -43,6 +43,8 @@ This repo contains a project with examples for using a embedded .NET runtime in 
    * [Native string to managed function pointer](#native-string-to-managed-function-pointer)
    * [Calling native exported symbols using DllExport](#calling-native-exported-symbols-using-dllexport)
    * [Calling native exported symbols using GetProcAddress/dlsym](#calling-native-exported-symbols-using-getprocaddressdlsym)
+   * [Calling native VTable from managed code](#calling-native-vtable-from-managed-code)
+   * [Overwriting native VTable with managed code](#overwriting-native-vtable-with-managed-code)
 * [LICENSE](#license)
 <!--te-->
 
@@ -104,7 +106,7 @@ auto runtime = dotnet_runtime::Runtime(hostfxr_path, libRuntimeconfig_path);
 
 auto lib = dotnet_runtime::Library(&runtime, libDll_path, STR("Lib"));
 ```
-<sup><a href='/Host/Host.cpp#L86-L92' title='Snippet source file'>snippet source</a> | <a href='#snippet-initruntimeandlib' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/Host/Host.cpp#L87-L93' title='Snippet source file'>snippet source</a> | <a href='#snippet-initruntimeandlib' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 ---
@@ -1215,22 +1217,202 @@ public static int Test_NativeExport_Call(IntPtr moduleHandle, int number)
 </p>
 </details>
 
+---
+
+## Calling native VTable from managed code
+
+<details><summary>Native</summary>
+<p>
+
+<!-- snippet: Test_NativeVTable_Class_CPP -->
+<a id='snippet-test_nativevtable_class_cpp'></a>
+```h
+class ClassLayout
+{
+private:
+	int m_iTest = 0;
+public:
+	virtual void AddOne() { this->m_iTest += 1; }
+	virtual void AddTwo() { this->m_iTest += 2; }
+
+	int GetTest() { return m_iTest; }
+};
+```
+<sup><a href='/Host/Test_NativeVTable.h#L8-L19' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativevtable_class_cpp' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
+
+<!-- snippet: Test_NativeVTable_Call_CPP -->
+<a id='snippet-test_nativevtable_call_cpp'></a>
+```h
+ClassLayout* instance = new ClassLayout();
+
+// Calls AddOne and AddTwo, then overwrites VTable
+fpTest_NativeVTable_Call((void*)instance);
+```
+<sup><a href='/Host/Test_NativeVTable.h#L34-L39' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativevtable_call_cpp' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
+
+</p>
+</details>
+
+<details><summary>Managed</summary>
+<p>
+
+<!-- snippet: Test_NativeVTable_Class_CS -->
+<a id='snippet-test_nativevtable_class_cs'></a>
+```cs
+[StructLayout(LayoutKind.Sequential)]
+private struct ClassLayout
+{
+    public IntPtr VTable;
+    public int test;
+}
+
+[StructLayout(LayoutKind.Sequential)]
+private struct ClassVTable
+{
+    public IntPtr Method_AddOne;
+    public IntPtr Method_AddTwo;
+}
+
+//[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+delegate void MethodDelegate(IntPtr thisPtr);
+```
+<sup><a href='/Lib/Test_NativeVTable.cs#L8-L25' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativevtable_class_cs' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
+
+<!-- snippet: Test_NativeVTable_ManagedCall_CS -->
+<a id='snippet-test_nativevtable_managedcall_cs'></a>
+```cs
+ClassLayout instance = Marshal.PtrToStructure<ClassLayout>(classInstance);
+
+ClassVTable vTable = Marshal.PtrToStructure<ClassVTable>(instance.VTable);
+
+MethodDelegate method_AddOne =
+    Marshal.GetDelegateForFunctionPointer<MethodDelegate>(vTable.Method_AddOne);
+MethodDelegate method_AddTwo =
+    Marshal.GetDelegateForFunctionPointer<MethodDelegate>(vTable.Method_AddTwo);
+
+method_AddOne(classInstance);
+method_AddTwo(classInstance);
+```
+<sup><a href='/Lib/Test_NativeVTable.cs#L48-L62' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativevtable_managedcall_cs' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
+
+</p>
+</details>
+
+---
+
+## Overwriting native VTable with managed code
+
+<details><summary>Native</summary>
+<p>
+
+<!-- snippet: Test_NativeVTable_Class_CPP -->
+<a id='snippet-test_nativevtable_class_cpp'></a>
+```h
+class ClassLayout
+{
+private:
+	int m_iTest = 0;
+public:
+	virtual void AddOne() { this->m_iTest += 1; }
+	virtual void AddTwo() { this->m_iTest += 2; }
+
+	int GetTest() { return m_iTest; }
+};
+```
+<sup><a href='/Host/Test_NativeVTable.h#L8-L19' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativevtable_class_cpp' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
+
+<!-- snippet: Test_NativeVTable_Call_CPP -->
+<a id='snippet-test_nativevtable_call_cpp'></a>
+```h
+ClassLayout* instance = new ClassLayout();
+
+// Calls AddOne and AddTwo, then overwrites VTable
+fpTest_NativeVTable_Call((void*)instance);
+```
+<sup><a href='/Host/Test_NativeVTable.h#L34-L39' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativevtable_call_cpp' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
+
+</p>
+</details>
+
+<details><summary>Managed</summary>
+<p>
+
+<!-- snippet: Test_NativeVTable_Class_CS -->
+<a id='snippet-test_nativevtable_class_cs'></a>
+```cs
+[StructLayout(LayoutKind.Sequential)]
+private struct ClassLayout
+{
+    public IntPtr VTable;
+    public int test;
+}
+
+[StructLayout(LayoutKind.Sequential)]
+private struct ClassVTable
+{
+    public IntPtr Method_AddOne;
+    public IntPtr Method_AddTwo;
+}
+
+//[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+delegate void MethodDelegate(IntPtr thisPtr);
+```
+<sup><a href='/Lib/Test_NativeVTable.cs#L8-L25' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativevtable_class_cs' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
+
+<!-- snippet: Test_NativeVTable_Overwrite_CS -->
+<a id='snippet-test_nativevtable_overwrite_cs'></a>
+```cs
+private static MethodDelegate delegate_SubOne = new MethodDelegate(thisPtr =>
+{
+    unsafe
+    {
+        unchecked
+        {
+            var instance = (ClassLayout*)thisPtr;
+            instance->test -= 1;
+        }
+    }
+});
+
+static IntPtr _overwrittenVTable = IntPtr.Zero;
+```
+<sup><a href='/Lib/Test_NativeVTable.cs#L27-L41' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativevtable_overwrite_cs' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
+
+<!-- snippet: Test_NativeVTable_ManagedOverwrite_CS -->
+<a id='snippet-test_nativevtable_managedoverwrite_cs'></a>
+```cs
+unsafe
+{
+    unchecked
+    {
+        // WARNING: vTable need to be freed at some point!
+        _overwrittenVTable = Marshal.AllocHGlobal(Marshal.SizeOf<ClassVTable>());
+
+        var vTable = (ClassVTable*)_overwrittenVTable;
+
+        vTable->Method_AddTwo = vTable->Method_AddOne =
+            Marshal.GetFunctionPointerForDelegate(delegate_SubOne);
+
+        var instance = (ClassLayout*) classInstance;
+        instance->VTable = (IntPtr)vTable;
+    }
+}
+```
+<sup><a href='/Lib/Test_NativeVTable.cs#L65-L82' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativevtable_managedoverwrite_cs' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
+
+</p>
+</details>
+<br/>
+
 # LICENSE
 
 dotnet_runtime_test is licensed under MIT license. See [LICENSE](./LICENSE) for more details.
-
-
-<!--
-<details><summary>Managed</summary>
-<p> custom-entrypoint
-
-#<details><summary>Native</summary>
-<p>
-
--snippet: ToDo
-
-#<details><summary>Managed</summary>
-<p>
-
--snippet: ToDo
--->

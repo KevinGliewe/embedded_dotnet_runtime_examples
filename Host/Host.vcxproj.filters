@@ -50,5 +50,8 @@
     <ClInclude Include="Test_NativeExport.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="Test_NativeVTable.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

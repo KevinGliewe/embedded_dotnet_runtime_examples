@@ -158,6 +158,7 @@
     <ClInclude Include="Test_NativeExport.h" />
     <ClInclude Include="Test_NativeFunctionPointer.h" />
     <ClInclude Include="Test_NativeString.h" />
+    <ClInclude Include="Test_NativeVTable.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
