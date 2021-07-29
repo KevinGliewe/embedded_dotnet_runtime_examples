@@ -43,8 +43,8 @@ This repo contains a project with examples for using a embedded .NET 5 runtime i
    * [Native string to managed function pointer](#native-string-to-managed-function-pointer)
    * [Calling native exported symbols using DllImport](#calling-native-exported-symbols-using-dllimport)
    * [Calling native exported symbols using GetProcAddress/dlsym](#calling-native-exported-symbols-using-getprocaddressdlsym)
-   * [Calling native VTable from managed code](#calling-native-vtable-from-managed-code)
-   * [Overwriting native VTable with managed code](#overwriting-native-vtable-with-managed-code)
+   * [Calling native <a href="https://en.wikipedia.org/wiki/Virtual_method_table" rel="nofollow">VTable</a> from managed code](#calling-native-vtable-from-managed-code)
+   * [Overwriting native <a href="https://en.wikipedia.org/wiki/Virtual_method_table" rel="nofollow">VTable</a> with managed code](#overwriting-native-vtable-with-managed-code)
 * [LICENSE](#license)
 <!--te-->
 
@@ -1221,7 +1221,7 @@ public static int Test_NativeExport_Call(IntPtr moduleHandle, int number)
 
 ---
 
-## Calling native VTable from managed code
+## Calling native [VTable](https://en.wikipedia.org/wiki/Virtual_method_table) from managed code
 
 <details><summary>Native</summary>
 <p>
@@ -1297,7 +1297,7 @@ MethodDelegate method_AddTwo =
 method_AddOne(classInstance);
 method_AddTwo(classInstance);
 ```
-<sup><a href='/Lib/Test_NativeVTable.cs#L49-L62' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativevtable_managedcall_cs' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/Lib/Test_NativeVTable.cs#L44-L57' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativevtable_managedcall_cs' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 </p>
@@ -1305,7 +1305,7 @@ method_AddTwo(classInstance);
 
 ---
 
-## Overwriting native VTable with managed code
+## Overwriting native [VTable](https://en.wikipedia.org/wiki/Virtual_method_table) with managed code
 
 <details><summary>Native</summary>
 <p>
@@ -1369,22 +1369,17 @@ delegate void MethodDelegate(IntPtr thisPtr);
 <!-- snippet: Test_NativeVTable_Overwrite_CS -->
 <a id='snippet-test_nativevtable_overwrite_cs'></a>
 ```cs
-private static readonly MethodDelegate delegate_SubOne = new MethodDelegate(thisPtr =>
+// This delegate will be the new virtual method
+private static readonly unsafe MethodDelegate delegate_SubOne = new MethodDelegate(thisPtr =>
 {
-    unsafe
-    {
-        unchecked
-        {
-            var instance = (ClassLayout*)thisPtr;
-            instance->test -= 1;
-        }
-    }
+    var instance = (ClassLayout*)thisPtr;
+    instance->test -= 1;
 });
 
 // Create new unmanaged VTable instance
 private static readonly UnmanagedMemory<ClassVTable> OverwrittenVTable = new();
 ```
-<sup><a href='/Lib/Test_NativeVTable.cs#L27-L42' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativevtable_overwrite_cs' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/Lib/Test_NativeVTable.cs#L27-L37' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativevtable_overwrite_cs' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 <!-- snippet: Test_NativeVTable_ManagedOverwrite_CS -->
@@ -1404,7 +1399,7 @@ unsafe
     instance->VTable = (IntPtr) vTable;
 }
 ```
-<sup><a href='/Lib/Test_NativeVTable.cs#L65-L79' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativevtable_managedoverwrite_cs' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/Lib/Test_NativeVTable.cs#L60-L74' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativevtable_managedoverwrite_cs' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 </p>

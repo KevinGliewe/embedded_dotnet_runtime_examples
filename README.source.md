@@ -428,7 +428,7 @@ snippet: Test_NativeExport_CS
 
 ---
 
-## Calling native VTable from managed code
+## Calling native [VTable](https://en.wikipedia.org/wiki/Virtual_method_table) from managed code
 
 <details><summary>Native</summary>
 <p>
@@ -452,7 +452,7 @@ snippet: Test_NativeVTable_ManagedCall_CS
 
 ---
 
-## Overwriting native VTable with managed code
+## Overwriting native [VTable](https://en.wikipedia.org/wiki/Virtual_method_table) with managed code
 
 <details><summary>Native</summary>
 <p>

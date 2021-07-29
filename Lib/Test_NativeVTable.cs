@@ -25,16 +25,11 @@ namespace LibNamespace
         #endregion
 
         #region Test_NativeVTable_Overwrite_CS
-        private static readonly MethodDelegate delegate_SubOne = new MethodDelegate(thisPtr =>
+        // This delegate will be the new virtual method
+        private static readonly unsafe MethodDelegate delegate_SubOne = new MethodDelegate(thisPtr =>
         {
-            unsafe
-            {
-                unchecked
-                {
-                    var instance = (ClassLayout*)thisPtr;
-                    instance->test -= 1;
-                }
-            }
+            var instance = (ClassLayout*)thisPtr;
+            instance->test -= 1;
         });
 
         // Create new unmanaged VTable instance
