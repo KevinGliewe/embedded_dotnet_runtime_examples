@@ -1,10 +1,10 @@
 
 <div align="center">
-  <h1>Embedded .NET Runtime</h1>
-  <a href="https://github.com/KevinGliewe/dotnet_runtime_test/actions"><img alt="Build and Test" src="https://github.com/KevinGliewe/dotnet_runtime_test/workflows/Build%20and%20Test/badge.svg?branch=master"/></a>
+  <h1>Embedded .NET 5 Runtime</h1>
+  <a href="https://github.com/KevinGliewe/embedded_dotnet_runtime_examples/actions"><img alt="Build and Test" src="https://github.com/KevinGliewe/embedded_dotnet_runtime_examples/workflows/Build%20and%20Test/badge.svg?branch=master"/></a>
 </div>
 
-This repo contains a project with examples for using a embedded .NET runtime in a C++ application using [dotnet_runtime](https://github.com/KevinGliewe/dotnet_runtime).
+This repo contains a project with examples for using a embedded .NET 5 runtime in a C++ application using [dotnet_runtime](https://github.com/KevinGliewe/dotnet_runtime).
 
 <!--ts-->
 <!--te-->
@@ -26,33 +26,34 @@ This repo contains a project with examples for using a embedded .NET runtime in 
 
 ### What happens during the build?
  
- * Import `VsDevCmd.bat`
- * Install dotnet tool [`runtimedl`](https://github.com/KevinGliewe/dotnet_runtime/tree/runtimedl-tool)
- * Download the propper .NET 5 runtime for your system using [`runtimedl`](https://github.com/KevinGliewe/dotnet_runtime/tree/runtimedl-tool)
- * Build `Lib` and `Host` using MSBuild
- * Run `Host`
+ * Imports `VsDevCmd.bat`
+ * Installs dotnet tool [`runtimedl`](https://github.com/KevinGliewe/dotnet_runtime/tree/runtimedl-tool)
+ * Downloads the propper .NET 5 runtime for your system using [`runtimedl`](https://github.com/KevinGliewe/dotnet_runtime/tree/runtimedl-tool)
+ * Builds `Lib` and `Host` using MSBuild
+ * Runs `Host`
 
-## Linux
+## Linux & MacOS
 
 ### Requirements
 
  * CMake 3.16 or newer
  * .NET 5 SDK
+ * C++ compiler
 
 ### Steps
 
  1. Clone this repository recursively using
-    `git clone --recursive git@github.com:KevinGliewe/dotnet_runtime_test.git`
+    `git clone --recursive git@github.com:KevinGliewe/embedded_dotnet_runtime_examples.git`
  2. Run `sh build_run.sh`
 
 ### What happens during the build?
 
- * Install dotnet tool [`runtimedl`](https://github.com/KevinGliewe/dotnet_runtime/tree/runtimedl-tool)
- * Download the propper .NET 5 runtime for your system using [`runtimedl`](https://github.com/KevinGliewe/dotnet_runtime/tree/runtimedl-tool)
- * Build `Lib` using .NET 5 SDK
- * Create makefile using CMake
- * Build `Host` using make
- * Run `Host`
+ * Installs dotnet tool [`runtimedl`](https://github.com/KevinGliewe/dotnet_runtime/tree/runtimedl-tool)
+ * Downloads the propper .NET 5 runtime for your system using [`runtimedl`](https://github.com/KevinGliewe/dotnet_runtime/tree/runtimedl-tool)
+ * Builds `Lib` using .NET 5 SDK
+ * Creates makefile using CMake
+ * Builds `Host` using make
+ * Runs `Host`
 
 # Examples
 
@@ -131,6 +132,7 @@ snippet: Test_ManagedFunctionPointer_FunctionPointerCallbackDelegate_CS
 snippet: Test_ManagedFunctionPointer_Instance_CS
 </p>
 </details>
+
 ---
 
 ## Managed function-pointer to static function
@@ -382,7 +384,7 @@ snippet: Test_NativeString_FunctionPointer_CS
 
 ---
 
-## Calling native exported symbols using `DllExport`
+## Calling native exported symbols using `DllImport`
 
 <details><summary>Native</summary>
 <p>
