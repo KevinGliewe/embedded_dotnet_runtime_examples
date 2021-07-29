@@ -43,8 +43,8 @@ This repo contains a project with examples for using a embedded .NET 5 runtime i
    * [Native string to managed function pointer](#native-string-to-managed-function-pointer)
    * [Calling native exported symbols using DllImport](#calling-native-exported-symbols-using-dllimport)
    * [Calling native exported symbols using GetProcAddress/dlsym](#calling-native-exported-symbols-using-getprocaddressdlsym)
-   * [Calling native <a href="https://en.wikipedia.org/wiki/Virtual_method_table" rel="nofollow">VTable</a> from managed code](#calling-native-vtable-from-managed-code)
-   * [Overwriting native <a href="https://en.wikipedia.org/wiki/Virtual_method_table" rel="nofollow">VTable</a> with managed code](#overwriting-native-vtable-with-managed-code)
+   * [Calling native VTable from managed code](#calling-native-vtable-from-managed-code)
+   * [Overwriting native VTable with managed code](#overwriting-native-vtable-with-managed-code)
 * [LICENSE](#license)
 <!--te-->
 
@@ -1221,7 +1221,9 @@ public static int Test_NativeExport_Call(IntPtr moduleHandle, int number)
 
 ---
 
-## Calling native [VTable](https://en.wikipedia.org/wiki/Virtual_method_table) from managed code
+## Calling native VTable from managed code
+
+[VTable](https://en.wikipedia.org/wiki/Virtual_method_table)
 
 <details><summary>Native</summary>
 <p>
@@ -1305,7 +1307,9 @@ method_AddTwo(classInstance);
 
 ---
 
-## Overwriting native [VTable](https://en.wikipedia.org/wiki/Virtual_method_table) with managed code
+## Overwriting native VTable with managed code
+
+[VTable](https://en.wikipedia.org/wiki/Virtual_method_table)
 
 <details><summary>Native</summary>
 <p>
