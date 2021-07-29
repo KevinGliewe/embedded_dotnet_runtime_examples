@@ -90,8 +90,8 @@ namespace GCore.NativeInterop
             Str = str;
 
             var data = Enc.GetBytes(str + '\0');
-            Alloc(Size);
             Size = data.Length;
+            Alloc(Size);
             Marshal.Copy(data, 0, Ptr, Size);
         }
     }
