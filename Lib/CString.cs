@@ -79,11 +79,10 @@ namespace GCore.NativeInterop
         }
     }
 
-    public class CString : IDisposable
+    public class CString : UnmanagedMemory
     {
         public Encoding Enc { get; protected set; }
         public String Str { get; protected set; }
-        public IntPtr Ptr { get; protected set; }
         public int Size { get; protected set; }
 
         public CString(string str, CEncoding env = CEncoding.Ascii)
@@ -93,15 +92,8 @@ namespace GCore.NativeInterop
 
             var data = Enc.GetBytes(str + '\0');
             Size = data.Length;
-            Ptr = Marshal.AllocHGlobal(Size);
+            Alloc(Size);
             Marshal.Copy(data, 0, Ptr, Size);
-        }
-
-        public void Dispose()
-        {
-
-            if(Ptr != IntPtr.Zero)
-                Marshal.FreeHGlobal(Ptr);
         }
     }
 

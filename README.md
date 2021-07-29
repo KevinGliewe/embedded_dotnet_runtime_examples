@@ -1277,10 +1277,9 @@ private struct ClassVTable
     public IntPtr Method_AddTwo;
 }
 
-//[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 delegate void MethodDelegate(IntPtr thisPtr);
 ```
-<sup><a href='/Lib/Test_NativeVTable.cs#L8-L25' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativevtable_class_cs' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/Lib/Test_NativeVTable.cs#L9-L25' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativevtable_class_cs' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 <!-- snippet: Test_NativeVTable_ManagedCall_CS -->
@@ -1298,7 +1297,7 @@ MethodDelegate method_AddTwo =
 method_AddOne(classInstance);
 method_AddTwo(classInstance);
 ```
-<sup><a href='/Lib/Test_NativeVTable.cs#L48-L62' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativevtable_managedcall_cs' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/Lib/Test_NativeVTable.cs#L49-L62' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativevtable_managedcall_cs' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 </p>
@@ -1362,16 +1361,15 @@ private struct ClassVTable
     public IntPtr Method_AddTwo;
 }
 
-//[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 delegate void MethodDelegate(IntPtr thisPtr);
 ```
-<sup><a href='/Lib/Test_NativeVTable.cs#L8-L25' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativevtable_class_cs' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/Lib/Test_NativeVTable.cs#L9-L25' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativevtable_class_cs' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 <!-- snippet: Test_NativeVTable_Overwrite_CS -->
 <a id='snippet-test_nativevtable_overwrite_cs'></a>
 ```cs
-private static MethodDelegate delegate_SubOne = new MethodDelegate(thisPtr =>
+private static readonly MethodDelegate delegate_SubOne = new MethodDelegate(thisPtr =>
 {
     unsafe
     {
@@ -1383,9 +1381,10 @@ private static MethodDelegate delegate_SubOne = new MethodDelegate(thisPtr =>
     }
 });
 
-static IntPtr _overwrittenVTable = IntPtr.Zero;
+// Create new unmanaged VTable instance
+private static readonly UnmanagedMemory<ClassVTable> OverwrittenVTable = new();
 ```
-<sup><a href='/Lib/Test_NativeVTable.cs#L27-L41' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativevtable_overwrite_cs' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/Lib/Test_NativeVTable.cs#L27-L42' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativevtable_overwrite_cs' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 <!-- snippet: Test_NativeVTable_ManagedOverwrite_CS -->
@@ -1393,22 +1392,19 @@ static IntPtr _overwrittenVTable = IntPtr.Zero;
 ```cs
 unsafe
 {
-    unchecked
-    {
-        // WARNING: vTable need to be freed at some point!
-        _overwrittenVTable = Marshal.AllocHGlobal(Marshal.SizeOf<ClassVTable>());
+    // Get the new VTable
+    var vTable = OverwrittenVTable.PtrElem;
 
-        var vTable = (ClassVTable*)_overwrittenVTable;
+    // Set the virtual methods with the new managed function pointer (Both the same for simplicity)
+    vTable->Method_AddTwo = vTable->Method_AddOne =
+        Marshal.GetFunctionPointerForDelegate(delegate_SubOne);
 
-        vTable->Method_AddTwo = vTable->Method_AddOne =
-            Marshal.GetFunctionPointerForDelegate(delegate_SubOne);
-
-        var instance = (ClassLayout*) classInstance;
-        instance->VTable = (IntPtr)vTable;
-    }
+    // Overwrite the VTable reference of the instance
+    var instance = (ClassLayout*) classInstance;
+    instance->VTable = (IntPtr) vTable;
 }
 ```
-<sup><a href='/Lib/Test_NativeVTable.cs#L65-L82' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativevtable_managedoverwrite_cs' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/Lib/Test_NativeVTable.cs#L65-L79' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativevtable_managedoverwrite_cs' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 </p>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using GCore.NativeInterop;
 
 namespace LibNamespace
 {
@@ -19,13 +20,12 @@ namespace LibNamespace
             public IntPtr Method_AddOne;
             public IntPtr Method_AddTwo;
         }
-
-        //[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        
         delegate void MethodDelegate(IntPtr thisPtr);
         #endregion
 
         #region Test_NativeVTable_Overwrite_CS
-        private static MethodDelegate delegate_SubOne = new MethodDelegate(thisPtr =>
+        private static readonly MethodDelegate delegate_SubOne = new MethodDelegate(thisPtr =>
         {
             unsafe
             {
@@ -37,7 +37,8 @@ namespace LibNamespace
             }
         });
 
-        static IntPtr _overwrittenVTable = IntPtr.Zero;
+        // Create new unmanaged VTable instance
+        private static readonly UnmanagedMemory<ClassVTable> OverwrittenVTable = new();
         #endregion
 
         [UnmanagedCallersOnly]
@@ -46,7 +47,6 @@ namespace LibNamespace
 
             {
                 #region Test_NativeVTable_ManagedCall_CS
-
                 ClassLayout instance = Marshal.PtrToStructure<ClassLayout>(classInstance);
 
                 ClassVTable vTable = Marshal.PtrToStructure<ClassVTable>(instance.VTable);
@@ -65,19 +65,16 @@ namespace LibNamespace
             #region Test_NativeVTable_ManagedOverwrite_CS
             unsafe
             {
-                unchecked
-                {
-                    // WARNING: vTable need to be freed at some point!
-                    _overwrittenVTable = Marshal.AllocHGlobal(Marshal.SizeOf<ClassVTable>());
+                // Get the new VTable
+                var vTable = OverwrittenVTable.PtrElem;
 
-                    var vTable = (ClassVTable*)_overwrittenVTable;
+                // Set the virtual methods with the new managed function pointer (Both the same for simplicity)
+                vTable->Method_AddTwo = vTable->Method_AddOne =
+                    Marshal.GetFunctionPointerForDelegate(delegate_SubOne);
 
-                    vTable->Method_AddTwo = vTable->Method_AddOne =
-                        Marshal.GetFunctionPointerForDelegate(delegate_SubOne);
-
-                    var instance = (ClassLayout*) classInstance;
-                    instance->VTable = (IntPtr)vTable;
-                }
+                // Overwrite the VTable reference of the instance
+                var instance = (ClassLayout*) classInstance;
+                instance->VTable = (IntPtr) vTable;
             }
             #endregion
         }
