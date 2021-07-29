@@ -83,7 +83,6 @@ namespace GCore.NativeInterop
     {
         public Encoding Enc { get; protected set; }
         public String Str { get; protected set; }
-        public int Size { get; protected set; }
 
         public CString(string str, CEncoding env = CEncoding.Ascii)
         {
@@ -91,8 +90,8 @@ namespace GCore.NativeInterop
             Str = str;
 
             var data = Enc.GetBytes(str + '\0');
-            Size = data.Length;
             Alloc(Size);
+            Size = data.Length;
             Marshal.Copy(data, 0, Ptr, Size);
         }
     }
