@@ -13,6 +13,7 @@ namespace GCore.NativeInterop
         {
             if (size > 0)
             {
+                System.Diagnostics.Debug.Assert(Ptr == IntPtr.Zero);
                 Ptr = Marshal.AllocHGlobal(size);
                 Size = size;
             }
