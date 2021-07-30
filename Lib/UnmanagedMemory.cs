@@ -35,6 +35,11 @@ namespace GCore.NativeInterop
             Alloc(Marshal.SizeOf(dataType) * count);
         }
 
+        ~UnmanagedMemory()
+        {
+            Dispose();
+        }
+
         public void Dispose()
         {
             if (Ptr != IntPtr.Zero)
