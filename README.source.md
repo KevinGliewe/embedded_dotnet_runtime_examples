@@ -63,9 +63,12 @@ snippet: InitRuntimeAndLib
 
 ---
 
-## Managed component-entrypoint
+## Managed Entrypoint
 
 > Entrypoints can only use [blittable types](https://en.wikipedia.org/wiki/Blittable_types)
+
+
+### Managed component-entrypoint
 
 <details><summary>Native</summary>
 <p>
@@ -81,15 +84,11 @@ snippet: Test_ManagedEntryPoint_ComponentEntryPoint_CPP
 
 snippet: Test_ManagedEntryPoint_Args_CS
 
-> Component-entrypoints always have this signature: `static int <NAME>(IntPtr, int)`
-
 snippet: Test_ManagedEntryPoint_ComponentEntryPoint_CS
 </p>
 </details>
 
----
-
-## Managed custom-entrypoint
+### Managed custom-entrypoint
 
 > Entrypoints can only use [blittable types](https://en.wikipedia.org/wiki/Blittable_types)
 
@@ -113,51 +112,9 @@ snippet: Test_ManagedEntryPoint_CustomEntryPoint_CS
 
 ---
 
-## Managed function-pointer to instance method
+## Managed Strings
 
-<details><summary>Native</summary>
-<p>
-
-snippet: Test_ManagedFunctionPointer_Typedef_managed_callback_fn_CPP
-
-snippet: Test_ManagedFunctionPointer_Instance_CPP
-</p>
-</details>
-
-<details><summary>Managed</summary>
-<p>
-
-snippet: Test_ManagedFunctionPointer_FunctionPointerCallbackDelegate_CS
-
-snippet: Test_ManagedFunctionPointer_Instance_CS
-</p>
-</details>
-
----
-
-## Managed function-pointer to static function
-
-<details><summary>Native</summary>
-<p>
-
-snippet: Test_ManagedFunctionPointer_Typedef_managed_callback_fn_CPP
-
-snippet: Test_ManagedFunctionPointer_Static_CPP
-</p>
-</details>
-
-<details><summary>Managed</summary>
-<p>
-
-snippet: Test_ManagedFunctionPointer_FunctionPointerCallbackDelegate_CS
-
-snippet: Test_ManagedFunctionPointer_Static_CS
-</p>
-</details>
-
----
-
-## Return managed ASCII string
+### Return managed ASCII string
 
 <details><summary>Native</summary>
 <p>
@@ -179,9 +136,7 @@ What does CString do?
  3. Allocate memory for native access using [`Marshal.AllocHGlobal`](https://docs.microsoft.com/en-us/dotnet/api/system.runtime.interopservices.marshal.allochglobal?view=net-5.0).
  4. Copy the encoded string into the allocated memory.
 
----
-
-## Return managed wide string
+### Return managed wide string
 
 > The encoding depends on the platform. For windows systems it is UTF16 and for posix systems it is UTF32.
 
@@ -208,83 +163,107 @@ snippet: Test_ManagedString_Wide_CS
 
 ---
 
-## Usage of unsafe managed code to access native objects
+## Native Strings
+
+### Native ASCII string
 
 <details><summary>Native</summary>
 <p>
 
-snippet: Test_ManagedUnsafe_CPP
+snippet: Test_NativeString_Ansi_CPP
 </p>
 </details>
 
 <details><summary>Managed</summary>
 <p>
 
-snippet: Test_ManagedUnsafe_CS
+snippet: Test_NativeString_Ansi_CS
 </p>
 </details>
 
----
-
-## Native arrays using fixed struct member
+### Native Wide string
 
 <details><summary>Native</summary>
 <p>
 
-snippet: Test_NativeArray_Args_CPP
-
-snippet: Test_NativeArray_Args_Data_CPP
-
-snippet: Test_NativeArray_StructFixed_CPP
+snippet: Test_NativeString_Wide_CPP
 </p>
 </details>
 
 <details><summary>Managed</summary>
 <p>
 
-snippet: Test_NativeArray_StructFixed_CS
+snippet: Test_NativeString_Wide_CS
 </p>
 </details>
 
----
-
-## Native arrays using pointer
+### Native string to managed function pointer
 
 <details><summary>Native</summary>
 <p>
 
-snippet: Test_NativeArray_ArgumentFixed_CPP
+snippet: Test_NativeString_RetArgs_CPP
+
+snippet: Test_NativeString_FunctionPointer_CPP
 </p>
 </details>
 
 <details><summary>Managed</summary>
 <p>
 
-snippet: Test_NativeArray_ArgumentFixed_CS
+snippet: Test_NativeString_FunctionPointer_CS
 </p>
 </details>
 
 ---
 
-## Native arrays using ArrPointerX on function-pointer
+## Managed function-pointer
+
+### Managed function-pointer to instance method
 
 <details><summary>Native</summary>
 <p>
 
-snippet: Test_NativeArray_ArgumentFixed_FunctionPointer_CPP
+snippet: Test_ManagedFunctionPointer_Typedef_managed_callback_fn_CPP
+
+snippet: Test_ManagedFunctionPointer_Instance_CPP
 </p>
 </details>
 
 <details><summary>Managed</summary>
 <p>
 
-snippet: Test_NativeArray_ArgumentFixed_FunctionPointer_CS
+snippet: Test_ManagedFunctionPointer_FunctionPointerCallbackDelegate_CS
+
+snippet: Test_ManagedFunctionPointer_Instance_CS
+</p>
+</details>
+
+### Managed function-pointer to static function
+
+<details><summary>Native</summary>
+<p>
+
+snippet: Test_ManagedFunctionPointer_Typedef_managed_callback_fn_CPP
+
+snippet: Test_ManagedFunctionPointer_Static_CPP
+</p>
+</details>
+
+<details><summary>Managed</summary>
+<p>
+
+snippet: Test_ManagedFunctionPointer_FunctionPointerCallbackDelegate_CS
+
+snippet: Test_ManagedFunctionPointer_Static_CS
 </p>
 </details>
 
 ---
 
-## Calling checked native function pointer
+## Native function-pointer
+
+### Calling checked native function pointer
 
 <details><summary>Native</summary>
 <p>
@@ -304,9 +283,7 @@ snippet: Test_NativeFunctionPointer_Checked_CS
 </p>
 </details>
 
----
-
-## Calling unchecked native function pointer
+### Calling unchecked native function pointer
 
 <details><summary>Native</summary>
 <p>
@@ -328,63 +305,83 @@ snippet: Test_NativeFunctionPointer_Unchecked_CS
 
 ---
 
-## Native ASCII string
+## Usage of unsafe managed code to access native objects
 
 <details><summary>Native</summary>
 <p>
 
-snippet: Test_NativeString_Ansi_CPP
+snippet: Test_ManagedUnsafe_CPP
 </p>
 </details>
 
 <details><summary>Managed</summary>
 <p>
 
-snippet: Test_NativeString_Ansi_CS
+snippet: Test_ManagedUnsafe_CS
 </p>
 </details>
 
 ---
 
-## Native Wide string
+## Native Arrays
+
+### Native arrays using fixed struct member
 
 <details><summary>Native</summary>
 <p>
 
-snippet: Test_NativeString_Wide_CPP
+snippet: Test_NativeArray_Args_CPP
+
+snippet: Test_NativeArray_Args_Data_CPP
+
+snippet: Test_NativeArray_StructFixed_CPP
 </p>
 </details>
 
 <details><summary>Managed</summary>
 <p>
 
-snippet: Test_NativeString_Wide_CS
+snippet: Test_NativeArray_StructFixed_CS
 </p>
 </details>
 
----
-
-## Native string to managed function pointer
+### Native arrays using pointer
 
 <details><summary>Native</summary>
 <p>
 
-snippet: Test_NativeString_RetArgs_CPP
-
-snippet: Test_NativeString_FunctionPointer_CPP
+snippet: Test_NativeArray_ArgumentFixed_CPP
 </p>
 </details>
 
 <details><summary>Managed</summary>
 <p>
 
-snippet: Test_NativeString_FunctionPointer_CS
+snippet: Test_NativeArray_ArgumentFixed_CS
+</p>
+</details>
+
+### Native arrays using ArrPointerX on function-pointer
+
+<details><summary>Native</summary>
+<p>
+
+snippet: Test_NativeArray_ArgumentFixed_FunctionPointer_CPP
+</p>
+</details>
+
+<details><summary>Managed</summary>
+<p>
+
+snippet: Test_NativeArray_ArgumentFixed_FunctionPointer_CS
 </p>
 </details>
 
 ---
 
-## Calling native exported symbols using `DllImport`
+## Native Symbols
+
+### Calling native exported symbols using `DllImport`
 
 <details><summary>Native</summary>
 <p>
@@ -404,9 +401,7 @@ snippet: Test_DllImport_CS
 </p>
 </details>
 
----
-
-## Calling native exported symbols using `GetProcAddress`/`dlsym`
+### Calling native exported symbols using `GetProcAddress`/`dlsym`
 
 <details><summary>Native</summary>
 <p>
@@ -428,9 +423,11 @@ snippet: Test_NativeExport_CS
 
 ---
 
-## Calling native VTable from managed code
+## Native VTable
 
 [VTable](https://en.wikipedia.org/wiki/Virtual_method_table)
+
+### Calling native VTable from managed code
 
 <details><summary>Native</summary>
 <p>
@@ -452,11 +449,7 @@ snippet: Test_NativeVTable_ManagedCall_CS
 </p>
 </details>
 
----
-
-## Overwriting native VTable with managed code
-
-[VTable](https://en.wikipedia.org/wiki/Virtual_method_table)
+### Overwriting native VTable with managed code
 
 <details><summary>Native</summary>
 <p>
