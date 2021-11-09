@@ -26,25 +26,33 @@ This repo contains a project with examples for using a embedded .NET 5 runtime i
       * [What happens during the build?](#what-happens-during-the-build-1)
 * [Examples](#examples)
    * [Load and initialize .NET runtime](#load-and-initialize-net-runtime)
-   * [Managed component-entrypoint](#managed-component-entrypoint)
-   * [Managed custom-entrypoint](#managed-custom-entrypoint)
-   * [Managed function-pointer to instance method](#managed-function-pointer-to-instance-method)
-   * [Managed function-pointer to static function](#managed-function-pointer-to-static-function)
-   * [Return managed ASCII string](#return-managed-ascii-string)
-   * [Return managed wide string](#return-managed-wide-string)
+   * [Managed Entrypoint](#managed-entrypoint)
+      * [Managed component-entrypoint](#managed-component-entrypoint)
+      * [Managed custom-entrypoint](#managed-custom-entrypoint)
+   * [Managed Strings](#managed-strings)
+      * [Return managed ASCII string](#return-managed-ascii-string)
+      * [Return managed wide string](#return-managed-wide-string)
+   * [Native Strings](#native-strings)
+      * [Native ASCII string](#native-ascii-string)
+      * [Native Wide string](#native-wide-string)
+      * [Native string to managed function pointer](#native-string-to-managed-function-pointer)
+   * [Managed function-pointer](#managed-function-pointer)
+      * [Managed function-pointer to instance method](#managed-function-pointer-to-instance-method)
+      * [Managed function-pointer to static function](#managed-function-pointer-to-static-function)
+   * [Native function-pointer](#native-function-pointer)
+      * [Calling checked native function pointer](#calling-checked-native-function-pointer)
+      * [Calling unchecked native function pointer](#calling-unchecked-native-function-pointer)
    * [Usage of unsafe managed code to access native objects](#usage-of-unsafe-managed-code-to-access-native-objects)
-   * [Native arrays using fixed struct member](#native-arrays-using-fixed-struct-member)
-   * [Native arrays using pointer](#native-arrays-using-pointer)
-   * [Native arrays using ArrPointerX on function-pointer](#native-arrays-using-arrpointerx-on-function-pointer)
-   * [Calling checked native function pointer](#calling-checked-native-function-pointer)
-   * [Calling unchecked native function pointer](#calling-unchecked-native-function-pointer)
-   * [Native ASCII string](#native-ascii-string)
-   * [Native Wide string](#native-wide-string)
-   * [Native string to managed function pointer](#native-string-to-managed-function-pointer)
-   * [Calling native exported symbols using DllImport](#calling-native-exported-symbols-using-dllimport)
-   * [Calling native exported symbols using GetProcAddress/dlsym](#calling-native-exported-symbols-using-getprocaddressdlsym)
-   * [Calling native VTable from managed code](#calling-native-vtable-from-managed-code)
-   * [Overwriting native VTable with managed code](#overwriting-native-vtable-with-managed-code)
+   * [Native Arrays](#native-arrays)
+      * [Native arrays using fixed struct member](#native-arrays-using-fixed-struct-member)
+      * [Native arrays using pointer](#native-arrays-using-pointer)
+      * [Native arrays using ArrPointerX on function-pointer](#native-arrays-using-arrpointerx-on-function-pointer)
+   * [Native Symbols](#native-symbols)
+      * [Calling native exported symbols using DllImport](#calling-native-exported-symbols-using-dllimport)
+      * [Calling native exported symbols using GetProcAddress/dlsym](#calling-native-exported-symbols-using-getprocaddressdlsym)
+   * [Native VTable](#native-vtable)
+      * [Calling native VTable from managed code](#calling-native-vtable-from-managed-code)
+      * [Overwriting native VTable with managed code](#overwriting-native-vtable-with-managed-code)
 * [LICENSE](#license)
 <!--te-->
 
@@ -112,9 +120,12 @@ auto lib = dotnet_runtime::Library(&runtime, libDll_path, STR("Lib"));
 
 ---
 
-## Managed component-entrypoint
+## Managed Entrypoint
 
 > Entrypoints can only use [blittable types](https://en.wikipedia.org/wiki/Blittable_types)
+
+
+### Managed component-entrypoint
 
 <details><summary>Native</summary>
 <p>
@@ -163,8 +174,6 @@ public unsafe struct Args
 <sup><a href='/Lib/Test_ManagedEntryPoint.cs#L9-L16' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_managedentrypoint_args_cs' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
-> Component-entrypoints always have this signature: `static int <NAME>(IntPtr, int)`
-
 <!-- snippet: Test_ManagedEntryPoint_ComponentEntryPoint_CS -->
 <a id='snippet-test_managedentrypoint_componententrypoint_cs'></a>
 ```cs
@@ -185,9 +194,7 @@ public static int Test_ComponentEntryPoint(IntPtr arg, int argLength)
 </p>
 </details>
 
----
-
-## Managed custom-entrypoint
+### Managed custom-entrypoint
 
 > Entrypoints can only use [blittable types](https://en.wikipedia.org/wiki/Blittable_types)
 
@@ -256,7 +263,288 @@ public static int Test_CustomEntryPoint(Args args)
 
 ---
 
-## Managed function-pointer to instance method
+## Managed Strings
+
+### Return managed ASCII string
+
+<details><summary>Native</summary>
+<p>
+
+<!-- snippet: Test_ManagedString_Ansi_CPP -->
+<a id='snippet-test_managedstring_ansi_cpp'></a>
+```h
+auto fpTest_ManagedString_Ansi = (custom_entry_point_fn)a_lib.GetCustomEntrypoint(
+	STR("LibNamespace.Test_ManagedString"),
+	STR("Test_ManagedString_Ansi")
+);
+
+char* str = (char*)fpTest_ManagedString_Ansi();
+
+// Compare the ASCII strings
+bool success = cmp(str, (char*)"Hello Ansi");
+
+LogTest(success, L"Test_ManagedString_Ansi");
+```
+<sup><a href='/Host/Test_ManagedString.h#L17-L31' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_managedstring_ansi_cpp' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
+</p>
+</details>
+
+<details><summary>Managed</summary>
+<p>
+
+<!-- snippet: Test_ManagedString_Ansi_CS -->
+<a id='snippet-test_managedstring_ansi_cs'></a>
+```cs
+public static readonly CString HelloAnsi = new CString("Hello Ansi");
+
+[UnmanagedCallersOnly]
+public static IntPtr Test_ManagedString_Ansi()
+{
+    return HelloAnsi.Ptr;
+}
+```
+<sup><a href='/Lib/Test_ManagedString.cs#L9-L17' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_managedstring_ansi_cs' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
+</p>
+</details>
+
+What does CString do?
+ 1. Apends a `\0` character on the end of the string.
+ 2. Converts the string into ANSI encoding.
+ 3. Allocate memory for native access using [`Marshal.AllocHGlobal`](https://docs.microsoft.com/en-us/dotnet/api/system.runtime.interopservices.marshal.allochglobal?view=net-5.0).
+ 4. Copy the encoded string into the allocated memory.
+
+### Return managed wide string
+
+> The encoding depends on the platform. For windows systems it is UTF16 and for posix systems it is UTF32.
+
+<details><summary>Native</summary>
+<p>
+
+<!-- snippet: Test_ManagedString_Wide_CPP -->
+<a id='snippet-test_managedstring_wide_cpp'></a>
+```h
+auto fpTest_ManagedString_Wide = (custom_entry_point_fn)a_lib.GetCustomEntrypoint(
+	STR("LibNamespace.Test_ManagedString"),
+	STR("Test_ManagedString_Wide")
+);
+
+wchar_t* str = (wchar_t*)fpTest_ManagedString_Wide();
+
+// Compare the wide strings
+bool success = cmp(str, (wchar_t*)L"Hello ❤");
+
+LogTest(success, L"Test_ManagedString_Wide");
+```
+<sup><a href='/Host/Test_ManagedString.h#L36-L50' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_managedstring_wide_cpp' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
+</p>
+</details>
+
+<details><summary>Managed</summary>
+<p>
+
+What does CString do?
+ 1. Determins the correct encoding for the current platform. (UTF16 or UTF32)
+ 2. Apends a `\0` character on the end of the string.
+ 3. Converts the string into the propper encoding.
+ 4. Allocate memory for native access using [`Marshal.AllocHGlobal`](https://docs.microsoft.com/en-us/dotnet/api/system.runtime.interopservices.marshal.allochglobal?view=net-5.0).
+ 5. Copy the encoded string into the allocated memory.
+
+<!-- snippet: Test_ManagedString_Wide_CS -->
+<a id='snippet-test_managedstring_wide_cs'></a>
+```cs
+public static readonly CString HelloWide = new CString("Hello ❤", CEncoding.Wide);
+
+[UnmanagedCallersOnly]
+public static IntPtr Test_ManagedString_Wide()
+{
+    return HelloWide.Ptr;
+}
+```
+<sup><a href='/Lib/Test_ManagedString.cs#L19-L27' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_managedstring_wide_cs' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
+</p>
+</details>
+
+---
+
+## Native Strings
+
+### Native ASCII string
+
+<details><summary>Native</summary>
+<p>
+
+<!-- snippet: Test_NativeString_Ansi_CPP -->
+<a id='snippet-test_nativestring_ansi_cpp'></a>
+```h
+auto fpTest_NativeString_Ansi = (custom_entry_point_fn)a_lib.GetCustomEntrypoint(
+	STR("LibNamespace.Test_NativeString"),
+	STR("Test_NativeString_Ansi")
+);
+
+bool success = fpTest_NativeString_Ansi((void*)"Hello Ansi");
+LogTest(success, L"Test_NativeString_Ansi");
+```
+<sup><a href='/Host/Test_NativeString.h#L22-L32' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativestring_ansi_cpp' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
+</p>
+</details>
+
+<details><summary>Managed</summary>
+<p>
+
+<!-- snippet: Test_NativeString_Ansi_CS -->
+<a id='snippet-test_nativestring_ansi_cs'></a>
+```cs
+[UnmanagedCallersOnly]
+public static int Test_NativeString_Ansi(IntPtr stringPtr)
+{
+    return CEncoding.Ascii.GetString(stringPtr) == "Hello Ansi" ? 1 : 0;
+}
+```
+<sup><a href='/Lib/Test_NativeString.cs#L12-L18' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativestring_ansi_cs' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
+</p>
+</details>
+
+### Native Wide string
+
+<details><summary>Native</summary>
+<p>
+
+<!-- snippet: Test_NativeString_Wide_CPP -->
+<a id='snippet-test_nativestring_wide_cpp'></a>
+```h
+auto fpTest_NativeString_Wide = (custom_entry_point_fn)a_lib.GetCustomEntrypoint(
+	STR("LibNamespace.Test_NativeString"),
+	STR("Test_NativeString_Wide")
+);
+
+bool success = fpTest_NativeString_Wide((void*)L"Hello ❤");
+LogTest(success, L"Test_NativeString_Wide");
+```
+<sup><a href='/Host/Test_NativeString.h#L37-L47' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativestring_wide_cpp' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
+</p>
+</details>
+
+<details><summary>Managed</summary>
+<p>
+
+<!-- snippet: Test_NativeString_Wide_CS -->
+<a id='snippet-test_nativestring_wide_cs'></a>
+```cs
+[UnmanagedCallersOnly]
+public static int Test_NativeString_Wide(IntPtr stringPtr)
+{
+    return CEncoding.Wide.GetString(stringPtr) == "Hello ❤" ? 1 : 0;
+}
+```
+<sup><a href='/Lib/Test_NativeString.cs#L20-L26' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativestring_wide_cs' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
+</p>
+</details>
+
+### Native string to managed function pointer
+
+<details><summary>Native</summary>
+<p>
+
+<!-- snippet: Test_NativeString_RetArgs_CPP -->
+<a id='snippet-test_nativestring_retargs_cpp'></a>
+```h
+struct RetArgs
+{
+	bool (*CallbackAnsi)(const char*);
+	bool (*CallbackWide)(const wchar_t*);
+};
+```
+<sup><a href='/Host/Test_NativeString.h#L7-L13' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativestring_retargs_cpp' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
+
+<!-- snippet: Test_NativeString_FunctionPointer_CPP -->
+<a id='snippet-test_nativestring_functionpointer_cpp'></a>
+```h
+typedef void (CORECLR_DELEGATE_CALLTYPE* custom_entry_point_fn2)(void*);
+
+auto fpTest_NativeString_FunctionPointer = (custom_entry_point_fn2)a_lib.GetCustomEntrypoint(
+	STR("LibNamespace.Test_NativeString"),
+	STR("Test_NativeString_FunctionPointer")
+);
+
+RetArgs retArgs;
+fpTest_NativeString_FunctionPointer(&retArgs);
+
+{ // Ansi
+	bool success = retArgs.CallbackAnsi("Hello Ansi");
+	LogTest(success, L"Test_NativeString_FunctionPointer.CallbackAnsi");
+
+	ret &= success;
+}
+
+{ // Wide
+	bool success = retArgs.CallbackWide(L"Hello ❤");
+	LogTest(success, L"Test_NativeString_FunctionPointer.CallbackWide");
+
+	ret &= success;
+}
+```
+<sup><a href='/Host/Test_NativeString.h#L52-L78' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativestring_functionpointer_cpp' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
+</p>
+</details>
+
+<details><summary>Managed</summary>
+<p>
+
+<!-- snippet: Test_NativeString_FunctionPointer_CS -->
+<a id='snippet-test_nativestring_functionpointer_cs'></a>
+```cs
+public delegate bool FunctionPointerCallbackAnsiDelegate(NativeString nstr);
+public delegate bool FunctionPointerCallbackWideDelegate(NativeWString nstr);
+
+public static FunctionPointerCallbackAnsiDelegate FunctionPointerCallbackAnsiDelegateInstance =
+    new FunctionPointerCallbackAnsiDelegate(CallbackAnsi);
+
+public static FunctionPointerCallbackWideDelegate FunctionPointerCallbackWideDelegateInstance =
+    new FunctionPointerCallbackWideDelegate(CallbackWide);
+
+public static bool CallbackAnsi(NativeString nstr) => nstr.ToString() == "Hello Ansi";
+public static bool CallbackWide(NativeWString nstr) => nstr.ToString() == "Hello ❤";
+
+[StructLayout(LayoutKind.Sequential)]
+public struct RetArgs
+{
+    public IntPtr CallbackAnsi;
+    public IntPtr CallbackWide;
+}
+
+[UnmanagedCallersOnly]
+public static void Test_NativeString_FunctionPointer(IntPtr retArgsPtr)
+{
+    unsafe
+    {
+        RetArgs* retArgs = (RetArgs*)retArgsPtr;
+        retArgs->CallbackAnsi =
+            Marshal.GetFunctionPointerForDelegate(FunctionPointerCallbackAnsiDelegateInstance);
+        retArgs->CallbackWide =
+            Marshal.GetFunctionPointerForDelegate(FunctionPointerCallbackWideDelegateInstance);
+    }
+}
+```
+<sup><a href='/Lib/Test_NativeString.cs#L29-L62' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativestring_functionpointer_cs' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
+</p>
+</details>
+
+---
+
+## Managed function-pointer
+
+### Managed function-pointer to instance method
 
 <details><summary>Native</summary>
 <p>
@@ -339,9 +627,7 @@ public static IntPtr Test_ManagedFunctionPointer_Instance(int member)
 </p>
 </details>
 
----
-
-## Managed function-pointer to static function
+### Managed function-pointer to static function
 
 <details><summary>Native</summary>
 <p>
@@ -409,27 +695,44 @@ public static IntPtr Test_ManagedFunctionPointer_Static()
 
 ---
 
-## Return managed ASCII string
+## Native function-pointer
+
+### Calling checked native function pointer
 
 <details><summary>Native</summary>
 <p>
 
-<!-- snippet: Test_ManagedString_Ansi_CPP -->
-<a id='snippet-test_managedstring_ansi_cpp'></a>
+<!-- snippet: Test_NativeFunctionPointer_CallbackFunc_CPP -->
+<a id='snippet-test_nativefunctionpointer_callbackfunc_cpp'></a>
 ```h
-auto fpTest_ManagedString_Ansi = (custom_entry_point_fn)a_lib.GetCustomEntrypoint(
-	STR("LibNamespace.Test_ManagedString"),
-	STR("Test_ManagedString_Ansi")
+int FEXPORT CallbackFunc(int i)
+{
+	return i * 2;
+}
+```
+<sup><a href='/Host/Test_NativeFunctionPointer.h#L8-L13' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativefunctionpointer_callbackfunc_cpp' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
+
+<!-- snippet: Test_NativeFunctionPointer_CallbackPointer_CPP -->
+<a id='snippet-test_nativefunctionpointer_callbackpointer_cpp'></a>
+```h
+void* fpNativeCallback = (void*)&CallbackFunc;
+```
+<sup><a href='/Host/Test_NativeFunctionPointer.h#L21-L23' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativefunctionpointer_callbackpointer_cpp' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
+
+<!-- snippet: Test_NativeFunctionPointer_CallbackFunc_Checked_CPP -->
+<a id='snippet-test_nativefunctionpointer_callbackfunc_checked_cpp'></a>
+```h
+auto fpTest_NativeFunctionPointer_Checked = (custom_entry_point_fn)a_lib.GetCustomEntrypoint(
+	STR("LibNamespace.Test_NativeFunctionPointer"),
+	STR("Test_NativeFunctionPointer_Checked")
 );
 
-char* str = (char*)fpTest_ManagedString_Ansi();
-
-// Compare the ASCII strings
-bool success = cmp(str, (char*)"Hello Ansi");
-
-LogTest(success, L"Test_ManagedString_Ansi");
+bool success = fpTest_NativeFunctionPointer_Checked(fpNativeCallback, 4) == 8;
+LogTest(success, L"Test_NativeFunctionPointer_Checked");
 ```
-<sup><a href='/Host/Test_ManagedString.h#L17-L31' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_managedstring_ansi_cpp' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/Host/Test_NativeFunctionPointer.h#L26-L36' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativefunctionpointer_callbackfunc_checked_cpp' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 </p>
 </details>
@@ -437,53 +740,61 @@ LogTest(success, L"Test_ManagedString_Ansi");
 <details><summary>Managed</summary>
 <p>
 
-<!-- snippet: Test_ManagedString_Ansi_CS -->
-<a id='snippet-test_managedstring_ansi_cs'></a>
+<!-- snippet: Test_NativeFunctionPointer_Checked_CS -->
+<a id='snippet-test_nativefunctionpointer_checked_cs'></a>
 ```cs
-public static readonly CString HelloAnsi = new CString("Hello Ansi");
+public delegate int FunctionPointerCallbackDelegate(int a);
 
 [UnmanagedCallersOnly]
-public static IntPtr Test_ManagedString_Ansi()
+public static int Test_NativeFunctionPointer_Checked(IntPtr nativeFunctionPtr, int number)
 {
-    return HelloAnsi.Ptr;
+    var callbackFuncDelegate =
+        (FunctionPointerCallbackDelegate)Marshal.GetDelegateForFunctionPointer(nativeFunctionPtr,
+            typeof(FunctionPointerCallbackDelegate));
+    return callbackFuncDelegate(number);
 }
 ```
-<sup><a href='/Lib/Test_ManagedString.cs#L9-L17' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_managedstring_ansi_cs' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/Lib/Test_NativeFunctionPointer.cs#L8-L19' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativefunctionpointer_checked_cs' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 </p>
 </details>
 
-What does CString do?
- 1. Apends a `\0` character on the end of the string.
- 2. Converts the string into ANSI encoding.
- 3. Allocate memory for native access using [`Marshal.AllocHGlobal`](https://docs.microsoft.com/en-us/dotnet/api/system.runtime.interopservices.marshal.allochglobal?view=net-5.0).
- 4. Copy the encoded string into the allocated memory.
-
----
-
-## Return managed wide string
-
-> The encoding depends on the platform. For windows systems it is UTF16 and for posix systems it is UTF32.
+### Calling unchecked native function pointer
 
 <details><summary>Native</summary>
 <p>
 
-<!-- snippet: Test_ManagedString_Wide_CPP -->
-<a id='snippet-test_managedstring_wide_cpp'></a>
+<!-- snippet: Test_NativeFunctionPointer_CallbackFunc_CPP -->
+<a id='snippet-test_nativefunctionpointer_callbackfunc_cpp'></a>
 ```h
-auto fpTest_ManagedString_Wide = (custom_entry_point_fn)a_lib.GetCustomEntrypoint(
-	STR("LibNamespace.Test_ManagedString"),
-	STR("Test_ManagedString_Wide")
+int FEXPORT CallbackFunc(int i)
+{
+	return i * 2;
+}
+```
+<sup><a href='/Host/Test_NativeFunctionPointer.h#L8-L13' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativefunctionpointer_callbackfunc_cpp' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
+
+<!-- snippet: Test_NativeFunctionPointer_CallbackPointer_CPP -->
+<a id='snippet-test_nativefunctionpointer_callbackpointer_cpp'></a>
+```h
+void* fpNativeCallback = (void*)&CallbackFunc;
+```
+<sup><a href='/Host/Test_NativeFunctionPointer.h#L21-L23' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativefunctionpointer_callbackpointer_cpp' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
+
+<!-- snippet: Test_NativeFunctionPointer_CallbackFunc_Unchecked_CPP -->
+<a id='snippet-test_nativefunctionpointer_callbackfunc_unchecked_cpp'></a>
+```h
+auto fpTest_NativeFunctionPointer_Unchecked = (custom_entry_point_fn)a_lib.GetCustomEntrypoint(
+	STR("LibNamespace.Test_NativeFunctionPointer"),
+	STR("Test_NativeFunctionPointer_Unchecked")
 );
 
-wchar_t* str = (wchar_t*)fpTest_ManagedString_Wide();
-
-// Compare the wide strings
-bool success = cmp(str, (wchar_t*)L"Hello ❤");
-
-LogTest(success, L"Test_ManagedString_Wide");
+bool success = fpTest_NativeFunctionPointer_Unchecked(fpNativeCallback, 4) == 8;
+LogTest(success, L"Test_NativeFunctionPointer_Unchecked");
 ```
-<sup><a href='/Host/Test_ManagedString.h#L36-L50' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_managedstring_wide_cpp' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/Host/Test_NativeFunctionPointer.h#L41-L51' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativefunctionpointer_callbackfunc_unchecked_cpp' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 </p>
 </details>
@@ -491,25 +802,23 @@ LogTest(success, L"Test_ManagedString_Wide");
 <details><summary>Managed</summary>
 <p>
 
-What does CString do?
- 1. Determins the correct encoding for the current platform. (UTF16 or UTF32)
- 2. Apends a `\0` character on the end of the string.
- 3. Converts the string into the propper encoding.
- 4. Allocate memory for native access using [`Marshal.AllocHGlobal`](https://docs.microsoft.com/en-us/dotnet/api/system.runtime.interopservices.marshal.allochglobal?view=net-5.0).
- 5. Copy the encoded string into the allocated memory.
-
-<!-- snippet: Test_ManagedString_Wide_CS -->
-<a id='snippet-test_managedstring_wide_cs'></a>
+<!-- snippet: Test_NativeFunctionPointer_Unchecked_CS -->
+<a id='snippet-test_nativefunctionpointer_unchecked_cs'></a>
 ```cs
-public static readonly CString HelloWide = new CString("Hello ❤", CEncoding.Wide);
-
 [UnmanagedCallersOnly]
-public static IntPtr Test_ManagedString_Wide()
+public static int Test_NativeFunctionPointer_Unchecked(IntPtr nativeFunctionPtr, int number)
 {
-    return HelloWide.Ptr;
+    unsafe
+    {
+        unchecked
+        {
+            var callbackFuncPtr = (delegate* unmanaged[Cdecl]<int, int>)nativeFunctionPtr;
+            return callbackFuncPtr(number);
+        }
+    }
 }
 ```
-<sup><a href='/Lib/Test_ManagedString.cs#L19-L27' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_managedstring_wide_cs' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/Lib/Test_NativeFunctionPointer.cs#L21-L34' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativefunctionpointer_unchecked_cs' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 </p>
 </details>
@@ -609,7 +918,9 @@ public static void Test_ManagedUnsafe_Struct(IntPtr ptr)
 
 ---
 
-## Native arrays using fixed struct member
+## Native Arrays
+
+### Native arrays using fixed struct member
 
 <details><summary>Native</summary>
 <p>
@@ -686,9 +997,7 @@ public static unsafe int Test_NativeArray_StructFixed(Args args)
 </p>
 </details>
 
----
-
-## Native arrays using pointer
+### Native arrays using pointer
 
 <details><summary>Native</summary>
 <p>
@@ -732,9 +1041,7 @@ public static int Test_NativeArray_ArgumentFixed(IntPtr arrPtr, int multiplier)
 </p>
 </details>
 
----
-
-## Native arrays using ArrPointerX on function-pointer
+### Native arrays using ArrPointerX on function-pointer
 
 <details><summary>Native</summary>
 <p>
@@ -786,311 +1093,9 @@ public static IntPtr Test_NativeArray_ArgumentFixed_FunctionPointer()
 
 ---
 
-## Calling checked native function pointer
+## Native Symbols
 
-<details><summary>Native</summary>
-<p>
-
-<!-- snippet: Test_NativeFunctionPointer_CallbackFunc_CPP -->
-<a id='snippet-test_nativefunctionpointer_callbackfunc_cpp'></a>
-```h
-int FEXPORT CallbackFunc(int i)
-{
-	return i * 2;
-}
-```
-<sup><a href='/Host/Test_NativeFunctionPointer.h#L8-L13' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativefunctionpointer_callbackfunc_cpp' title='Start of snippet'>anchor</a></sup>
-<!-- endSnippet -->
-
-<!-- snippet: Test_NativeFunctionPointer_CallbackPointer_CPP -->
-<a id='snippet-test_nativefunctionpointer_callbackpointer_cpp'></a>
-```h
-void* fpNativeCallback = (void*)&CallbackFunc;
-```
-<sup><a href='/Host/Test_NativeFunctionPointer.h#L21-L23' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativefunctionpointer_callbackpointer_cpp' title='Start of snippet'>anchor</a></sup>
-<!-- endSnippet -->
-
-<!-- snippet: Test_NativeFunctionPointer_CallbackFunc_Checked_CPP -->
-<a id='snippet-test_nativefunctionpointer_callbackfunc_checked_cpp'></a>
-```h
-auto fpTest_NativeFunctionPointer_Checked = (custom_entry_point_fn)a_lib.GetCustomEntrypoint(
-	STR("LibNamespace.Test_NativeFunctionPointer"),
-	STR("Test_NativeFunctionPointer_Checked")
-);
-
-bool success = fpTest_NativeFunctionPointer_Checked(fpNativeCallback, 4) == 8;
-LogTest(success, L"Test_NativeFunctionPointer_Checked");
-```
-<sup><a href='/Host/Test_NativeFunctionPointer.h#L26-L36' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativefunctionpointer_callbackfunc_checked_cpp' title='Start of snippet'>anchor</a></sup>
-<!-- endSnippet -->
-</p>
-</details>
-
-<details><summary>Managed</summary>
-<p>
-
-<!-- snippet: Test_NativeFunctionPointer_Checked_CS -->
-<a id='snippet-test_nativefunctionpointer_checked_cs'></a>
-```cs
-public delegate int FunctionPointerCallbackDelegate(int a);
-
-[UnmanagedCallersOnly]
-public static int Test_NativeFunctionPointer_Checked(IntPtr nativeFunctionPtr, int number)
-{
-    var callbackFuncDelegate =
-        (FunctionPointerCallbackDelegate)Marshal.GetDelegateForFunctionPointer(nativeFunctionPtr,
-            typeof(FunctionPointerCallbackDelegate));
-    return callbackFuncDelegate(number);
-}
-```
-<sup><a href='/Lib/Test_NativeFunctionPointer.cs#L8-L19' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativefunctionpointer_checked_cs' title='Start of snippet'>anchor</a></sup>
-<!-- endSnippet -->
-</p>
-</details>
-
----
-
-## Calling unchecked native function pointer
-
-<details><summary>Native</summary>
-<p>
-
-<!-- snippet: Test_NativeFunctionPointer_CallbackFunc_CPP -->
-<a id='snippet-test_nativefunctionpointer_callbackfunc_cpp'></a>
-```h
-int FEXPORT CallbackFunc(int i)
-{
-	return i * 2;
-}
-```
-<sup><a href='/Host/Test_NativeFunctionPointer.h#L8-L13' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativefunctionpointer_callbackfunc_cpp' title='Start of snippet'>anchor</a></sup>
-<!-- endSnippet -->
-
-<!-- snippet: Test_NativeFunctionPointer_CallbackPointer_CPP -->
-<a id='snippet-test_nativefunctionpointer_callbackpointer_cpp'></a>
-```h
-void* fpNativeCallback = (void*)&CallbackFunc;
-```
-<sup><a href='/Host/Test_NativeFunctionPointer.h#L21-L23' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativefunctionpointer_callbackpointer_cpp' title='Start of snippet'>anchor</a></sup>
-<!-- endSnippet -->
-
-<!-- snippet: Test_NativeFunctionPointer_CallbackFunc_Unchecked_CPP -->
-<a id='snippet-test_nativefunctionpointer_callbackfunc_unchecked_cpp'></a>
-```h
-auto fpTest_NativeFunctionPointer_Unchecked = (custom_entry_point_fn)a_lib.GetCustomEntrypoint(
-	STR("LibNamespace.Test_NativeFunctionPointer"),
-	STR("Test_NativeFunctionPointer_Unchecked")
-);
-
-bool success = fpTest_NativeFunctionPointer_Unchecked(fpNativeCallback, 4) == 8;
-LogTest(success, L"Test_NativeFunctionPointer_Unchecked");
-```
-<sup><a href='/Host/Test_NativeFunctionPointer.h#L41-L51' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativefunctionpointer_callbackfunc_unchecked_cpp' title='Start of snippet'>anchor</a></sup>
-<!-- endSnippet -->
-</p>
-</details>
-
-<details><summary>Managed</summary>
-<p>
-
-<!-- snippet: Test_NativeFunctionPointer_Unchecked_CS -->
-<a id='snippet-test_nativefunctionpointer_unchecked_cs'></a>
-```cs
-[UnmanagedCallersOnly]
-public static int Test_NativeFunctionPointer_Unchecked(IntPtr nativeFunctionPtr, int number)
-{
-    unsafe
-    {
-        unchecked
-        {
-            var callbackFuncPtr = (delegate* unmanaged[Cdecl]<int, int>)nativeFunctionPtr;
-            return callbackFuncPtr(number);
-        }
-    }
-}
-```
-<sup><a href='/Lib/Test_NativeFunctionPointer.cs#L21-L34' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativefunctionpointer_unchecked_cs' title='Start of snippet'>anchor</a></sup>
-<!-- endSnippet -->
-</p>
-</details>
-
----
-
-## Native ASCII string
-
-<details><summary>Native</summary>
-<p>
-
-<!-- snippet: Test_NativeString_Ansi_CPP -->
-<a id='snippet-test_nativestring_ansi_cpp'></a>
-```h
-auto fpTest_NativeString_Ansi = (custom_entry_point_fn)a_lib.GetCustomEntrypoint(
-	STR("LibNamespace.Test_NativeString"),
-	STR("Test_NativeString_Ansi")
-);
-
-bool success = fpTest_NativeString_Ansi((void*)"Hello Ansi");
-LogTest(success, L"Test_NativeString_Ansi");
-```
-<sup><a href='/Host/Test_NativeString.h#L22-L32' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativestring_ansi_cpp' title='Start of snippet'>anchor</a></sup>
-<!-- endSnippet -->
-</p>
-</details>
-
-<details><summary>Managed</summary>
-<p>
-
-<!-- snippet: Test_NativeString_Ansi_CS -->
-<a id='snippet-test_nativestring_ansi_cs'></a>
-```cs
-[UnmanagedCallersOnly]
-public static int Test_NativeString_Ansi(IntPtr stringPtr)
-{
-    return CEncoding.Ascii.GetString(stringPtr) == "Hello Ansi" ? 1 : 0;
-}
-```
-<sup><a href='/Lib/Test_NativeString.cs#L12-L18' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativestring_ansi_cs' title='Start of snippet'>anchor</a></sup>
-<!-- endSnippet -->
-</p>
-</details>
-
----
-
-## Native Wide string
-
-<details><summary>Native</summary>
-<p>
-
-<!-- snippet: Test_NativeString_Wide_CPP -->
-<a id='snippet-test_nativestring_wide_cpp'></a>
-```h
-auto fpTest_NativeString_Wide = (custom_entry_point_fn)a_lib.GetCustomEntrypoint(
-	STR("LibNamespace.Test_NativeString"),
-	STR("Test_NativeString_Wide")
-);
-
-bool success = fpTest_NativeString_Wide((void*)L"Hello ❤");
-LogTest(success, L"Test_NativeString_Wide");
-```
-<sup><a href='/Host/Test_NativeString.h#L37-L47' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativestring_wide_cpp' title='Start of snippet'>anchor</a></sup>
-<!-- endSnippet -->
-</p>
-</details>
-
-<details><summary>Managed</summary>
-<p>
-
-<!-- snippet: Test_NativeString_Wide_CS -->
-<a id='snippet-test_nativestring_wide_cs'></a>
-```cs
-[UnmanagedCallersOnly]
-public static int Test_NativeString_Wide(IntPtr stringPtr)
-{
-    return CEncoding.Wide.GetString(stringPtr) == "Hello ❤" ? 1 : 0;
-}
-```
-<sup><a href='/Lib/Test_NativeString.cs#L20-L26' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativestring_wide_cs' title='Start of snippet'>anchor</a></sup>
-<!-- endSnippet -->
-</p>
-</details>
-
----
-
-## Native string to managed function pointer
-
-<details><summary>Native</summary>
-<p>
-
-<!-- snippet: Test_NativeString_RetArgs_CPP -->
-<a id='snippet-test_nativestring_retargs_cpp'></a>
-```h
-struct RetArgs
-{
-	bool (*CallbackAnsi)(const char*);
-	bool (*CallbackWide)(const wchar_t*);
-};
-```
-<sup><a href='/Host/Test_NativeString.h#L7-L13' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativestring_retargs_cpp' title='Start of snippet'>anchor</a></sup>
-<!-- endSnippet -->
-
-<!-- snippet: Test_NativeString_FunctionPointer_CPP -->
-<a id='snippet-test_nativestring_functionpointer_cpp'></a>
-```h
-typedef void (CORECLR_DELEGATE_CALLTYPE* custom_entry_point_fn2)(void*);
-
-auto fpTest_NativeString_FunctionPointer = (custom_entry_point_fn2)a_lib.GetCustomEntrypoint(
-	STR("LibNamespace.Test_NativeString"),
-	STR("Test_NativeString_FunctionPointer")
-);
-
-RetArgs retArgs;
-fpTest_NativeString_FunctionPointer(&retArgs);
-
-{ // Ansi
-	bool success = retArgs.CallbackAnsi("Hello Ansi");
-	LogTest(success, L"Test_NativeString_FunctionPointer.CallbackAnsi");
-
-	ret &= success;
-}
-
-{ // Wide
-	bool success = retArgs.CallbackWide(L"Hello ❤");
-	LogTest(success, L"Test_NativeString_FunctionPointer.CallbackWide");
-
-	ret &= success;
-}
-```
-<sup><a href='/Host/Test_NativeString.h#L52-L78' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativestring_functionpointer_cpp' title='Start of snippet'>anchor</a></sup>
-<!-- endSnippet -->
-</p>
-</details>
-
-<details><summary>Managed</summary>
-<p>
-
-<!-- snippet: Test_NativeString_FunctionPointer_CS -->
-<a id='snippet-test_nativestring_functionpointer_cs'></a>
-```cs
-public delegate bool FunctionPointerCallbackAnsiDelegate(NativeString nstr);
-public delegate bool FunctionPointerCallbackWideDelegate(NativeWString nstr);
-
-public static FunctionPointerCallbackAnsiDelegate FunctionPointerCallbackAnsiDelegateInstance =
-    new FunctionPointerCallbackAnsiDelegate(CallbackAnsi);
-
-public static FunctionPointerCallbackWideDelegate FunctionPointerCallbackWideDelegateInstance =
-    new FunctionPointerCallbackWideDelegate(CallbackWide);
-
-public static bool CallbackAnsi(NativeString nstr) => nstr.ToString() == "Hello Ansi";
-public static bool CallbackWide(NativeWString nstr) => nstr.ToString() == "Hello ❤";
-
-[StructLayout(LayoutKind.Sequential)]
-public struct RetArgs
-{
-    public IntPtr CallbackAnsi;
-    public IntPtr CallbackWide;
-}
-
-[UnmanagedCallersOnly]
-public static void Test_NativeString_FunctionPointer(IntPtr retArgsPtr)
-{
-    unsafe
-    {
-        RetArgs* retArgs = (RetArgs*)retArgsPtr;
-        retArgs->CallbackAnsi =
-            Marshal.GetFunctionPointerForDelegate(FunctionPointerCallbackAnsiDelegateInstance);
-        retArgs->CallbackWide =
-            Marshal.GetFunctionPointerForDelegate(FunctionPointerCallbackWideDelegateInstance);
-    }
-}
-```
-<sup><a href='/Lib/Test_NativeString.cs#L29-L62' title='Snippet source file'>snippet source</a> | <a href='#snippet-test_nativestring_functionpointer_cs' title='Start of snippet'>anchor</a></sup>
-<!-- endSnippet -->
-</p>
-</details>
-
----
-
-## Calling native exported symbols using `DllImport`
+### Calling native exported symbols using `DllImport`
 
 <details><summary>Native</summary>
 <p>
@@ -1154,9 +1159,7 @@ public static int Test_DllImport_Call(IntPtr moduleHandle, int number)
 </p>
 </details>
 
----
-
-## Calling native exported symbols using `GetProcAddress`/`dlsym`
+### Calling native exported symbols using `GetProcAddress`/`dlsym`
 
 <details><summary>Native</summary>
 <p>
@@ -1221,9 +1224,11 @@ public static int Test_NativeExport_Call(IntPtr moduleHandle, int number)
 
 ---
 
-## Calling native VTable from managed code
+## Native VTable
 
 [VTable](https://en.wikipedia.org/wiki/Virtual_method_table)
+
+### Calling native VTable from managed code
 
 <details><summary>Native</summary>
 <p>
@@ -1305,11 +1310,7 @@ method_AddTwo(classInstance);
 </p>
 </details>
 
----
-
-## Overwriting native VTable with managed code
-
-[VTable](https://en.wikipedia.org/wiki/Virtual_method_table)
+### Overwriting native VTable with managed code
 
 <details><summary>Native</summary>
 <p>
