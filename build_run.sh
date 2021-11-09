@@ -13,7 +13,7 @@ else
     echo "runtime not installed"
     cd dotnet_runtime
     dotnet tool restore
-    dotnet runtimedl --version-pattern "^5\.0\.3$" --output "bin"
+    dotnet runtimedl --version-pattern "6.0.0" --output "bin"
     cd ..
 fi
 

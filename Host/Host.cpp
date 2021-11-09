@@ -4,7 +4,7 @@
 #include <iostream>
 #include <fstream>
 
-# define DOTNET_RUNTIME_VERSION "5.0.3"
+# define DOTNET_RUNTIME_VERSION "6.0.0"
 
 #include "Common.h"
 
@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
                 STR("/Users/kevingliewe/Documents/prog/dotnet/dotnet_runtime_test/");
 
     string_t root_path = root_repo + STR("dotnet_runtime") DIR_SEPARATOR;
-    //string_t hostfxr_path = L"C:\\Program Files\\dotnet\\host\\fxr\\5.0.3\\hostfxr.dll";//root_path + DOTNET_RUNTIME_PATH_HOSTFXR;
+    //string_t hostfxr_path = L"C:\\Program Files\\dotnet\\host\\fxr\\6.0.0\\hostfxr.dll";//root_path + DOTNET_RUNTIME_PATH_HOSTFXR;
     string_t hostfxr_path = root_path + DOTNET_RUNTIME_PATH_HOSTFXR;
 
     string_t lib_path = root_repo +
@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
         DIR_SEPARATOR
         STR("Lib")
         DIR_SEPARATOR
-        STR("net5.0")
+        STR("net6.0")
         DIR_SEPARATOR;
 
     string_t libDll_path = lib_path + STR("Lib.dll");
