@@ -1,10 +1,10 @@
 
 <div align="center">
-  <h1>Embedded .NET 5 Runtime</h1>
+  <h1>Embedded .NET 6 Runtime</h1>
   <a href="https://github.com/KevinGliewe/embedded_dotnet_runtime_examples/actions"><img alt="Build and Test" src="https://github.com/KevinGliewe/embedded_dotnet_runtime_examples/workflows/Build%20and%20Test/badge.svg?branch=master"/></a>
 </div>
 
-This repo contains a project with examples for using a embedded .NET 5 runtime in a C++ application using [dotnet_runtime](https://github.com/KevinGliewe/dotnet_runtime).
+This repo contains a project with examples for using a embedded .NET 6 runtime in a C++ application using [dotnet_runtime](https://github.com/KevinGliewe/dotnet_runtime).
 
 <!--ts-->
 <!--te-->
@@ -16,7 +16,7 @@ This repo contains a project with examples for using a embedded .NET 5 runtime i
 ### Requirements
 
  * Visual Studio 2019
- * .NET 5 SDK
+ * .NET 6 SDK
 
 ### Steps
 
@@ -28,7 +28,7 @@ This repo contains a project with examples for using a embedded .NET 5 runtime i
  
  * Imports `VsDevCmd.bat`
  * Installs dotnet tool [`runtimedl`](https://github.com/KevinGliewe/dotnet_runtime/tree/runtimedl-tool)
- * Downloads the propper .NET 5 runtime for your system using [`runtimedl`](https://github.com/KevinGliewe/dotnet_runtime/tree/runtimedl-tool)
+ * Downloads the propper .NET 6 runtime for your system using [`runtimedl`](https://github.com/KevinGliewe/dotnet_runtime/tree/runtimedl-tool)
  * Builds `Lib` and `Host` using MSBuild
  * Runs `Host`
 
@@ -37,7 +37,7 @@ This repo contains a project with examples for using a embedded .NET 5 runtime i
 ### Requirements
 
  * CMake 3.16 or newer
- * .NET 5 SDK
+ * .NET 6 SDK
  * C++ compiler
 
 ### Steps
@@ -49,8 +49,8 @@ This repo contains a project with examples for using a embedded .NET 5 runtime i
 ### What happens during the build?
 
  * Installs dotnet tool [`runtimedl`](https://github.com/KevinGliewe/dotnet_runtime/tree/runtimedl-tool)
- * Downloads the propper .NET 5 runtime for your system using [`runtimedl`](https://github.com/KevinGliewe/dotnet_runtime/tree/runtimedl-tool)
- * Builds `Lib` using .NET 5 SDK
+ * Downloads the propper .NET 6 runtime for your system using [`runtimedl`](https://github.com/KevinGliewe/dotnet_runtime/tree/runtimedl-tool)
+ * Builds `Lib` using .NET 6 SDK
  * Creates makefile using CMake
  * Builds `Host` using make
  * Runs `Host`
@@ -133,7 +133,7 @@ snippet: Test_ManagedString_Ansi_CS
 What does CString do?
  1. Apends a `\0` character on the end of the string.
  2. Converts the string into ANSI encoding.
- 3. Allocate memory for native access using [`Marshal.AllocHGlobal`](https://docs.microsoft.com/en-us/dotnet/api/system.runtime.interopservices.marshal.allochglobal?view=net-5.0).
+ 3. Allocate memory for native access using [`Marshal.AllocHGlobal`](https://docs.microsoft.com/en-us/dotnet/api/system.runtime.interopservices.marshal.allochglobal?view=net-6.0).
  4. Copy the encoded string into the allocated memory.
 
 ### Return managed wide string
@@ -154,7 +154,7 @@ What does CString do?
  1. Determins the correct encoding for the current platform. (UTF16 or UTF32)
  2. Apends a `\0` character on the end of the string.
  3. Converts the string into the propper encoding.
- 4. Allocate memory for native access using [`Marshal.AllocHGlobal`](https://docs.microsoft.com/en-us/dotnet/api/system.runtime.interopservices.marshal.allochglobal?view=net-5.0).
+ 4. Allocate memory for native access using [`Marshal.AllocHGlobal`](https://docs.microsoft.com/en-us/dotnet/api/system.runtime.interopservices.marshal.allochglobal?view=net-6.0).
  5. Copy the encoded string into the allocated memory.
 
 snippet: Test_ManagedString_Wide_CS
